@@ -8,7 +8,7 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 const connectDB = async () => {
     try {
         // Fallback to hardcoded URI if environment variable is not available
-        const uri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/krishanjh";
+        const uri = process.env.MONGODB_URI || "mongodb+srv://sangram:Sangram@123@cluster0.tgvjiho.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
         
         // Log the URI for debugging
         console.log("MongoDB connecting with URI:", uri);
