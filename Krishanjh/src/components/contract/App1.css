@@ -1,0 +1,64 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.krisaanjh-app-container {
+  background-color: #031c0d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.krisaanjh-logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.krisaanjh-logo img {
+  width: 30%;
+}
+
+.krisaanjh-logo h1 {
+  color: #479060;
+  font-family: "Arial", sans-serif;
+  font-size: 40px;
+}
+
+.krisaanjh-cards-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 900px;
+  margin-top: 5px;
+}
+
+.krisaanjh-card {
+  background-color: black;
+  border-radius: 30px;
+  overflow: hidden;
+  width: 40%;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.krisaanjh-image {
+  width: 100%;
+  height: auto;
+  border: 2px solid black;
+}
+
+.krisaanjh-card-footer {
+  background-color: #d3eacd;
+  padding: 10px;
+}
+
+.krisaanjh-card-footer h2 {
+  font-size: 30px;
+  color: #333;
+  font-family: "Arial", sans-serif;
+}
