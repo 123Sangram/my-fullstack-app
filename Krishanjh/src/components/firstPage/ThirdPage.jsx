@@ -6,7 +6,7 @@ import img1 from "../../assets/image 5.png";
 import img2 from "../../assets/image 6.png";
 import img3 from "../../assets/image 7.png";
 
-const FirstPage = () => {
+const ThirdPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const items = [
@@ -124,4 +124,4 @@ const FirstPage = () => {
   );
 };
 
-export default FirstPage;
+export default ThirdPage;
