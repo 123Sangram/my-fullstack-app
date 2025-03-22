@@ -3,7 +3,7 @@ import Footer from '../footer/Footer';
 import Slider from '../ImageSlider/Slider';
 import MidPage from '../midpage/MidPage';
 import Navbar from '../navbar/Navbar';
-import SecondPage from '../secondpage/SecondPage';
+import SecondPage from '../secondPage/Secondpage';
 import ThirdPage from '../firstPage/ThirdPage';
 
 const FrontPage = () => {
