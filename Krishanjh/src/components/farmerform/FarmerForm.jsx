@@ -44,12 +44,12 @@ export default function FarmerForm() {
         console.log("Attempting login with:", { email, password: "****" });
         
         const response = await axios.post(
-          "http://localhost:6500/api/farmer/login",
+          "https://my-fullstack-app-5.onrender.com/api/farmer/login",
           { email, password },
           {
             headers: {
-              'Content-Type': 'application/json'
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
 
@@ -87,12 +87,12 @@ export default function FarmerForm() {
         }
 
         const response = await axios.post(
-          "http://localhost:6500/api/farmer/addfarmer",
+          "https://my-fullstack-app-5.onrender.com/api/farmer/addfarmer",
           formDataToSend,
           {
             headers: {
-              'Content-Type': 'multipart/form-data'
-            }
+              "Content-Type": "multipart/form-data",
+            },
           }
         );
 

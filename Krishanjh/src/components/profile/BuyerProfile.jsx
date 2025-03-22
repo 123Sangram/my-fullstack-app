@@ -98,13 +98,13 @@ const BuyerProfile = () => {
       }
 
       const response = await axios.put(
-        `http://localhost:6500/api/buyer/update/${userId}`,
+        `https://my-fullstack-app-5.onrender.com/api/buyer/update/${userId}`,
         formDataToSend,
         {
           headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data'
-          }
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
 

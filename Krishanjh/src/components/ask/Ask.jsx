@@ -18,20 +18,7 @@ export default function Ask() {
 
   return (
     <div className="min-h-screen bg-[#0f261d] flex flex-col items-center">
-      {/* Logo Section */}
-      {/* <motion.div
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1 }}
-        className="absolute top-5 left-5 text-4xl font-bold text-green-300"
-      >
-        <span>
-          <img src={logo} alt="" />
-        </span>{" "}
-        <span className="animate-pulse">Krisaanjh</span>
-      </motion.div> */}
 
-      {/* Main Content */}
       <div className="flex justify-center items-center mt-40 gap-16">
         {/* Farmer Card */}
         <motion.div

@@ -23,7 +23,7 @@ const ChatBot = () => {
   // Initialize socket connection
   useEffect(() => {
     try {
-      const newSocket = io('http://localhost:6500');
+      const newSocket = io("https://my-fullstack-app-5.onrender.com");
       setSocket(newSocket);
       
       return () => {
@@ -84,13 +84,16 @@ const ChatBot = () => {
       console.log("Fetching users with userType:", userType);
       
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:6500/api/chat/users', {
-        headers: { Authorization: `Bearer ${token}` },
-        params: {
-          userType: userType === 'true' ? 'buyer' : 'farmer', // true means buyer, false means farmer
-          userId: user?._id || user?.id
+      const response = await axios.get(
+        "https://my-fullstack-app-5.onrender.com/api/chat/users",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          params: {
+            userType: userType === "true" ? "buyer" : "farmer", // true means buyer, false means farmer
+            userId: user?._id || user?.id,
+          },
         }
-      });
+      );
 
       console.log("Users response:", response.data);
 
@@ -121,13 +124,16 @@ const ChatBot = () => {
       const token = localStorage.getItem('token');
       const userId = user._id || user.id; // Handle both _id and id properties
 
-      const response = await axios.get('http://localhost:6500/api/chat/messages', {
-        headers: { Authorization: `Bearer ${token}` },
-        params: {
-          senderId: userId,
-          receiverId: selectedUser._id
+      const response = await axios.get(
+        "https://my-fullstack-app-5.onrender.com/api/chat/messages",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          params: {
+            senderId: userId,
+            receiverId: selectedUser._id,
+          },
         }
-      });
+      );
 
       console.log("Messages response:", response.data);
 
@@ -189,13 +195,13 @@ const ChatBot = () => {
       console.log("Sending message data:", messageData);
 
       const response = await axios.post(
-        'http://localhost:6500/api/chat/send',
+        "https://my-fullstack-app-5.onrender.com/api/chat/send",
         messageData,
         {
-          headers: { 
+          headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
+            "Content-Type": "application/json",
+          },
         }
       );
 

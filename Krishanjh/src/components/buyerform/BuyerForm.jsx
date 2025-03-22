@@ -56,10 +56,10 @@ export default function BuyerForm() {
     try {
       if (isLogin) {
         const response = await axios.post(
-          "http://localhost:6500/api/buyer/login",
+          "https://my-fullstack-app-5.onrender.com/api/buyer/login",
           {
             email: formData.email,
-            password: formData.password
+            password: formData.password,
           }
         );
 
@@ -85,12 +85,12 @@ export default function BuyerForm() {
         });
 
         const response = await axios.post(
-          "http://localhost:6500/api/buyer/register",
+          "https://my-fullstack-app-5.onrender.com/api/buyer/register",
           formDataToSend,
           {
             headers: {
-              'Content-Type': 'multipart/form-data'
-            }
+              "Content-Type": "multipart/form-data",
+            },
           }
         );
 
