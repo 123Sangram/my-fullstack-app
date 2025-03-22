@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import slide1 from '../../assets/images/Spright-Agro-Banner-1-scaled.jpeg';
-import slide2 from '../../assets/images/Spright-Agro-Banner-2-scaled.jpeg';
-import slide3 from '../../assets/images/Spright-Agro-Banner-3-scaled.jpeg';
+import slide2 from "../../assets/images/Spright-Agro-banner-2-scaled.jpeg";
+import slide3 from '../../assets/images/Spright-Agro-banner-3-scaled.jpeg';
 
 const EnterPage = () => {
   const navigate = useNavigate();
