@@ -345,9 +345,10 @@ export default function BuyerForm() {
             name="password"
             value={formData.password}
             onChange={handleChange}
+            
             className="mt-2 p-2 w-full rounded"
             required
-            autoComplete={isLogin ? "current-password" : "new-password"}
+            autoComplete={isLogin ?   "current-password" : "new-password"}
           />
         </label>
 
