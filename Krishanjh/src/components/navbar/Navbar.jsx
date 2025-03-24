@@ -4,6 +4,8 @@ import { useState } from "react";
 import { FaComments, FaGlobe, FaPhoneAlt } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from '../../context/AuthContext';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const translations = {
   en: {
@@ -41,54 +43,29 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    if (logout) {
-      logout();  // Call the logout function from context
-      console.log("User logged out");
-    } else {
-      // Fallback if context logout function is unavailable
-      localStorage.removeItem('token');
-      localStorage.removeItem('userType');
-      localStorage.removeItem('userData');
-      console.log("Manually cleared localStorage");
-    }
+    logout();
+    toast.success('Logged out successfully!');
     navigate('/');
   };
 
   const handleProfileClick = () => {
-    console.log("Profile clicked");
-    
-    // Check localStorage directly for token and user type
-    const token = localStorage.getItem('token');
-    const currentUserType = localStorage.getItem('userType');
-    
-    console.log("Token exists:", !!token);
-    console.log("Current userType:", currentUserType);
-    
-    // Only proceed if token exists
-    if (!token) {
-      console.log("No token found, redirecting to login");
-      navigate('/farmer-form');
+    if (!user) {
+      toast.error('Please login first');
+      navigate('/login');
       return;
     }
-    
-    if (currentUserType === 'farmer') {
-      console.log("Navigating to farmer profile");
-      navigate('/farmer-profile');
-    } else if (currentUserType === 'buyer') {
-      console.log("Navigating to buyer profile");
-      navigate('/buyer-profile');
-    } else if (currentUserType === 'true') {
-      // Handle legacy format where true = buyer
-      console.log("Legacy format detected (true = buyer)");
-      navigate('/buyer-profile');
-    } else if (currentUserType === 'false') {
-      // Handle legacy format where false = farmer
-      console.log("Legacy format detected (false = farmer)");
-      navigate('/farmer-profile');
-    } else {
-      console.log("Unknown user type, redirecting to login");
-      navigate('/farmer-form');
+
+    const userType = localStorage.getItem('userType');
+    if (userType === 'true') { // buyer
+      navigate("/buyer-profile");
+    } else { // farmer
+      navigate("/farmer-profile");
     }
+  };
+
+  const handleHomeClick = (e) => {
+    e.preventDefault();
+    navigate('/frontpage');
   };
 
   return (
@@ -101,7 +78,8 @@ export default function Navbar() {
       <div className="flex justify-between items-center py-6 px-10 relative">
         {/* Logo with Hover Effect */}
         <Link
-          to="/"
+          to="/frontpage"
+          onClick={handleHomeClick}
           className="text-4xl font-extrabold text-white tracking-wide relative"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
@@ -129,7 +107,7 @@ export default function Navbar() {
                 whileTap={{ scale: 0.9 }}
                 className="cursor-pointer transition-transform relative"
               >
-                <Link to={`/${key === "home" ? "" : key}`}>
+                <Link to={`/${key === "home" ? "frontpage" : key}`}>
                   {translations[language][key]}
                 </Link>
                 <motion.div
@@ -185,8 +163,18 @@ export default function Navbar() {
         <div className="flex gap-8 items-center">
           {user ? (
             <>
-       
-     
+              <button
+                onClick={handleProfileClick}
+                className="text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium mr-2"
+              >
+                {translations[language].profile}
+              </button>
+              <button
+                onClick={handleLogout}
+                className="text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
+              >
+                {translations[language].callUs}
+              </button>
             </>
           ) : (
             <>
@@ -198,10 +186,6 @@ export default function Navbar() {
               </Link>
             </>
           )}
-
-          <button className="flex items-center gap-2 text-white hover:scale-110 transition-transform">
-            <FaPhoneAlt /> {translations[language].callUs}
-          </button>
 
           <button
             className="flex items-center gap-2 text-white hover:scale-110 transition-transform"

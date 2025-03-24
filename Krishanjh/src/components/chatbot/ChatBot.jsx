@@ -1,11 +1,8 @@
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import React, { useEffect, useRef, useState } from 'react';
-import { FaMapMarkedAlt, FaTimes } from 'react-icons/fa';
-import { IoSend } from 'react-icons/io5';
 import { io } from 'socket.io-client';
 import { useAuth } from '../../context/AuthContext';
-import ChatMap from './ChatMap';
 import './ChatBot.css';
 
 const ChatBot = () => {
