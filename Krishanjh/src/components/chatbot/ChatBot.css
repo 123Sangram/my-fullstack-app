@@ -245,3 +245,78 @@ border:none;
 .btn-2:hover {
   background-color: #218838;
 }
+
+/* Add these styles to remove scrollbars */
+.chat-container {
+  overflow: hidden; /* Hide both scrollbars */
+}
+
+/* Style for messages */
+.message {
+  display: inline-block; /* This makes the background fit the content */
+  margin: 8px;
+  padding: 8px 12px;
+  border-radius: 15px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+/* Sent message container */
+.message-container-sent {
+  display: flex;
+  justify-content: flex-end;
+  margin: 4px 0;
+  padding: 0 10px;
+}
+
+/* Received message container */
+.message-container-received {
+  display: flex;
+  justify-content: flex-start;
+  margin: 4px 0;
+  padding: 0 10px;
+}
+
+/* Sent message style */
+.message-sent {
+  background-color: #25D366;
+  color: white;
+}
+
+/* Received message style */
+.message-received {
+  background-color: #f0f0f0;
+  color: black;
+}
+
+/* Hide scrollbars for all elements */
+* {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+/* Hide scrollbars for Chrome, Safari and Opera */
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/* Additional specific styles for chat container */
+.chat-container {
+  overflow: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.chat-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Users list container */
+.users-list {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.users-list::-webkit-scrollbar {
+  display: none;
+}

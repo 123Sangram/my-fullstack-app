@@ -6,6 +6,7 @@ import { IoSend } from 'react-icons/io5';
 import { io } from 'socket.io-client';
 import { useAuth } from '../../context/AuthContext';
 import ChatMap from './ChatMap';
+import './ChatBot.css';
 
 const ChatBot = () => {
   const [users, setUsers] = useState([]);
@@ -238,9 +239,9 @@ const ChatBot = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Users List */}
-      <div className="w-1/4 bg-white border-r">
+    <div className="flex h-screen">
+      {/* Users list */}
+      <div className="w-1/4 bg-gray-100 users-list">
         <h2 className="p-4 text-xl font-bold border-b">Chats</h2>
         {loading ? (
           <div className="p-4">Loading users...</div>
@@ -286,128 +287,60 @@ const ChatBot = () => {
         )}
       </div>
 
-      {/* Chat Area */}
-      <div className="flex-1 flex flex-col">
-        {selectedUser ? (
-          <>
-            {/* Chat Header */}
-            <div className="p-4 bg-white border-b flex justify-between items-center">
-              <div className="flex items-center space-x-3">
-                {selectedUser.image ? (
-                  <img
-                    src={selectedUser.image}
-                    alt={selectedUser.name}
-                    className="w-10 h-10 rounded-full"
-                  />
-                ) : (
-                  <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white">
-                    {selectedUser.name[0]}
-                  </div>
-                )}
-                <div>
-                  <div className="font-medium">{selectedUser.name}</div>
-                  <div className="text-sm text-gray-500">{selectedUser.userType}</div>
-                </div>
-              </div>
-              
-              {/* Map Icon Button */}
-              <button 
-                onClick={() => setShowMap(true)} 
-                className="text-green-600 hover:text-green-800 p-2 rounded-full hover:bg-green-100 transition-colors"
-                title="Open Location Map"
-              >
-                <FaMapMarkedAlt size={22} />
-              </button>
-            </div>
-
-            {/* Map Modal */}
-            {showMap && (
-              <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-                <div className="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-auto">
-                  <div className="flex justify-between items-center p-4 border-b">
-                    <h3 className="text-xl font-semibold">Location Map</h3>
-                    <button 
-                      onClick={() => setShowMap(false)}
-                      className="text-gray-600 hover:text-gray-900"
-                    >
-                      <FaTimes size={22} />
-                    </button>
-                  </div>
-                  <div className="p-4">
-                    <ChatMap selectedUser={selectedUser} currentUser={user} />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {Array.isArray(messages) && messages.length > 0 ? (
-                messages.map((message, index) => (
-                  <div
-                    key={message._id || index}
-                    className={`flex ${
-                      message.senderId === user?._id ? 'justify-end' : 'justify-start'
-                    }`}
-                  >
-                    <div
-                      className={`max-w-[70%] rounded-lg p-3 ${
-                        message.senderId === user?._id
-                          ? message.isSending 
-                            ? 'bg-gray-400 text-white' 
-                            : 'bg-green-500 text-white'
-                          : 'bg-white'
-                      }`}
-                    >
-                      <p>{message.content}</p>
-                      <div className="flex justify-between items-center mt-1">
-                        <p className="text-xs opacity-70">
-                          {new Date(message.timestamp || Date.now()).toLocaleTimeString()}
-                        </p>
-                        {message.isSending && (
-                          <p className="text-xs ml-2 italic">sending...</p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center text-gray-500">No messages yet</div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Message Input */}
-            <form
-              onSubmit={handleSendMessage}
-              className="p-4 bg-white border-t flex space-x-4"
-            >
-              <input
-                type="text"
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Type a message..."
-                className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+      {/* Chat area */}
+      <div className="w-3/4 flex flex-col chat-container">
+        {/* Chat Header */}
+        <div className="p-4 border-b">
+          {selectedUser && (
+            <div className="flex items-center">
+              <img
+                src={selectedUser.image || 'default-avatar.png'}
+                alt="Profile"
+                className="w-10 h-10 rounded-full mr-3"
               />
-              <button
-                type="submit"
-                className="bg-green-500 text-white rounded-lg px-6 py-2 flex items-center space-x-2 hover:bg-green-600"
-              >
-                <IoSend />
-                <span>Send</span>
-              </button>
-            </form>
-          </>
-        ) : (
-          <div className="flex-1 flex items-center justify-center p-4">
-            <div className="text-center">
-              <div className="text-6xl mb-4">👋</div>
-              <p className="text-xl text-gray-500">
-                Select a user to start chatting
-              </p>
+              <span className="font-semibold">{selectedUser.name}</span>
             </div>
+          )}
+        </div>
+
+        {/* Messages Area */}
+        <div className="flex-1 p-4 overflow-y-auto chat-container">
+          {messages.map((message, index) => (
+            <div
+              key={index}
+              className={`message-container-${
+                message.sender === user._id ? 'sent' : 'received'
+              }`}
+            >
+              <div
+                className={`message ${
+                  message.sender === user._id ? 'message-sent' : 'message-received'
+                }`}
+              >
+                {message.content}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Message Input */}
+        <div className="p-4 border-t">
+          <div className="flex">
+            <input
+              type="text"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              placeholder="Type a message..."
+              className="flex-1 border rounded-l-lg p-2 focus:outline-none focus:border-green-500"
+            />
+            <button
+              onClick={handleSendMessage}
+              className="bg-green-500 text-white px-6 py-2 rounded-r-lg hover:bg-green-600"
+            >
+              Send
+            </button>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

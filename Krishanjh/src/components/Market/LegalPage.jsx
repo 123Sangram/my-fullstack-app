@@ -87,7 +87,7 @@ export default function LegalPage() {
             Secure your future with a fair and legal farming contract today!
           </p>
           <a
-            href="/contact"
+            href="/frontpage"
             className="bg-green-500 hover:bg-green-700 text-white px-8 py-4 rounded-full text-lg font-bold shadow-xl transition-transform transform hover:scale-110"
           >
             Get Started

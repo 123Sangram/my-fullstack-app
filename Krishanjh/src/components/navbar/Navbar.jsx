@@ -185,18 +185,8 @@ export default function Navbar() {
         <div className="flex gap-8 items-center">
           {user ? (
             <>
-              <Link 
-                to="/chatbot" 
-                className="flex items-center gap-2 text-white hover:scale-110 transition-transform"
-              >
-                <FaComments /> Chat
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 px-4 py-2 rounded hover:bg-red-700 text-white"
-              >
-                Logout
-              </button>
+       
+     
             </>
           ) : (
             <>

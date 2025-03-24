@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from "../../context/AuthContext";
 
 export default function BuyerForm() {
@@ -19,23 +21,23 @@ export default function BuyerForm() {
     address: {
       line1: "",
       city: "",
-      pincode: ""
+      pincode: "",
     },
     image: null,
     latitude: "",
-    longitude: ""
+    longitude: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name.startsWith('address.')) {
-      const addressField = name.split('.')[1];
-      setFormData(prev => ({
+    if (name.startsWith("address.")) {
+      const addressField = name.split(".")[1];
+      setFormData((prev) => ({
         ...prev,
         address: {
           ...prev.address,
-          [addressField]: value
-        }
+          [addressField]: value,
+        },
       }));
     } else {
       setFormData({ ...formData, [name]: value });
@@ -53,9 +55,11 @@ export default function BuyerForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    
     try {
       if (isLogin) {
-        const response = await axios.post(
+        // Optimized login process
+        const loginPromise = axios.post(
           "https://my-fullstack-app-5.onrender.com/api/buyer/login",
           {
             email: formData.email,
@@ -63,21 +67,33 @@ export default function BuyerForm() {
           }
         );
 
+        // Show loading toast
+        toast.promise(loginPromise, {
+          pending: 'Logging in...',
+          success: 'Login successful! 👋',
+          error: 'Login failed 🤯'
+        });
+
+        const response = await loginPromise;
+
         if (response.data.success) {
+          // Start navigation immediately
+          navigate("/frontpage");
+          // Handle login in background
           await login(response.data.buyer, response.data.token, true);
         }
       } else {
-        const formDataToSend = new FormData();
-        
+        // Registration process
         if (!formData.name || !formData.email || !formData.password || !formData.phone) {
-          alert("Please fill all required fields");
+          toast.error("Please fill all required fields");
           return;
         }
 
-        Object.keys(formData).forEach(key => {
-          if (key === 'address') {
+        const formDataToSend = new FormData();
+        Object.keys(formData).forEach((key) => {
+          if (key === "address") {
             formDataToSend.append(key, JSON.stringify(formData[key]));
-          } else if (key === 'image' && formData[key]) {
+          } else if (key === "image" && formData[key]) {
             formDataToSend.append(key, formData[key]);
           } else {
             formDataToSend.append(key, formData[key]);
@@ -97,11 +113,11 @@ export default function BuyerForm() {
         if (response.data.success) {
           if (response.data.token && response.data.buyer) {
             // Auto login after registration
+            toast.success("Registration Successful! Logging you in...");
             await login(response.data.buyer, response.data.token, true);
-            alert("Registration Successful! You are now logged in.");
             navigate("/frontpage");
           } else {
-            alert("Registration Successful! You can now log in.");
+            toast.success("Registration Successful! Please login.");
             setIsLogin(true);
             resetForm();
           }
@@ -110,9 +126,9 @@ export default function BuyerForm() {
     } catch (error) {
       console.error("Error:", error);
       const errorMessage = error.response?.data?.message || 
-                          error.response?.data?.error || 
-                          "Something went wrong!";
-      alert(errorMessage);
+                         error.response?.data?.error || 
+                         "Something went wrong!";
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -128,11 +144,11 @@ export default function BuyerForm() {
       address: {
         line1: "",
         city: "",
-        pincode: ""
+        pincode: "",
       },
       image: null,
       latitude: "",
-      longitude: ""
+      longitude: "",
     });
     setImagePreview(null);
   };
@@ -141,25 +157,25 @@ export default function BuyerForm() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setFormData(prev => ({
+          setFormData((prev) => ({
             ...prev,
             latitude: position.coords.latitude.toString(),
-            longitude: position.coords.longitude.toString()
+            longitude: position.coords.longitude.toString(),
           }));
         },
         (error) => {
           console.error("Error getting location:", error);
-          setFormData(prev => ({
+          setFormData((prev) => ({
             ...prev,
             latitude: "20.5937",
-            longitude: "78.9629"
+            longitude: "78.9629",
           }));
           alert("Using default location. You can update it manually.");
         },
         {
           enableHighAccuracy: true,
           timeout: 5000,
-          maximumAge: 0
+          maximumAge: 0,
         }
       );
     }
@@ -167,6 +183,19 @@ export default function BuyerForm() {
 
   return (
     <div className="min-h-screen bg-[#0f261d] flex flex-col items-center p-8">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+
       <h1 className="text-4xl mt-20 font-bold text-green-300 mb-8">
         {isLogin ? "Buyer Login" : "Buyer Registration"}
       </h1>
@@ -324,9 +353,14 @@ export default function BuyerForm() {
 
         <button
           type="submit"
-          className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700"
+          disabled={isLoading}
+          className={`w-full ${
+            isLoading 
+              ? 'bg-gray-400 cursor-not-allowed' 
+              : 'bg-green-600 hover:bg-green-700'
+          } text-white py-2 rounded-lg transition-colors duration-200`}
         >
-          {isLogin ? "Login" : "Register"}
+          {isLoading ? 'Processing...' : (isLogin ? 'Login' : 'Register')}
         </button>
 
         <p className="mt-4 text-center">

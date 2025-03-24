@@ -205,9 +205,12 @@ const AboutContractFarming = () => {
             Join our platform to connect with reliable partners and grow your
             business.
           </p>
-          <button className="bg-[#215A37] text-white px-8 py-3 rounded-lg hover:bg-[#1a4729] transition-colors">
+          <a
+            href="/frontpage"
+            className="bg-[#215A37] text-white px-8 py-3 rounded-lg hover:bg-[#1a4729] transition-colors"
+          >
             Get Started Now
-          </button>
+          </a>
         </motion.div>
       </div>
     </div>

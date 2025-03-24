@@ -52,6 +52,7 @@ const ThirdPage = () => {
         "Training farmers, ranchers, and tree farmers to operate machinery safely and use protective equipment correctly can help reduce the high number of accidents.",
       link: "https://www.youtube.com/watch?v=PsSNBiBqVtI&list=PL5FjdkloWJydmiYGfricCpNJ0eFAEDF3V",
     },
+    
   ];
 
   useEffect(() => {

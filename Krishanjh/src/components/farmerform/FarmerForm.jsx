@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from "../../context/AuthContext";
 
 export default function FarmerForm() {
@@ -8,6 +10,7 @@ export default function FarmerForm() {
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
   const { login } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -36,24 +39,22 @@ export default function FarmerForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Start loading
 
     try {
       if (isLogin) {
         // Login API call
         const { email, password } = formData;
-        console.log("Attempting login with:", { email, password: "****" });
         
         const response = await axios.post(
-          "https://my-fullstack-app-5.onrender.com/api/farmer/login",
+          "http://localhost:6500/api/farmer/login",
           { email, password },
           {
             headers: {
-              "Content-Type": "application/json",
-            },
+              'Content-Type': 'application/json'
+            }
           }
         );
-
-        console.log("Login response:", response.data);
 
         if (response.data.success) {
           // Store token and update auth context
@@ -62,10 +63,21 @@ export default function FarmerForm() {
           localStorage.setItem('userData', JSON.stringify(response.data.farmer));
           await login(response.data.farmer, response.data.token, false);
           
-          alert("Login Successful!");
-          navigate("/frontpage");
+          toast.success('Login Successful!', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+
+          // Navigate after toast
+          setTimeout(() => {
+            navigate("/frontpage");
+          }, 1000);
         } else {
-          alert(response.data.message || "Login failed. Please check your credentials.");
+          toast.error(response.data.message || "Login failed!");
         }
       } else {
         // Registration API call
@@ -87,18 +99,22 @@ export default function FarmerForm() {
         }
 
         const response = await axios.post(
-          "https://my-fullstack-app-5.onrender.com/api/farmer/addfarmer",
+          "http://localhost:6500/api/farmer/addfarmer",
           formDataToSend,
           {
             headers: {
-              "Content-Type": "multipart/form-data",
-            },
+              'Content-Type': 'multipart/form-data'
+            }
           }
         );
 
         if (response.data.success) {
-          alert("Registration Successful! You can now log in.");
-          setIsLogin(true); // Switch to login form
+          toast.success('Registration Successful! Please login.', {
+            position: "top-right",
+            autoClose: 2000,
+          });
+          
+          setIsLogin(true);
           // Clear the form
           setFormData({
             name: "",
@@ -112,20 +128,21 @@ export default function FarmerForm() {
             experience: "",
           });
           setImagePreview(null);
-          await login(response.data.farmer, response.data.token, false);
         } else {
-          alert(response.data.message || "Registration failed. Please try again.");
+          toast.error(response.data.message || "Registration failed!");
         }
       }
     } catch (error) {
       console.error("Error: ", error);
-      const errorMessage = error.response?.data?.message || "Something went wrong! Please try again.";
-      alert(errorMessage);
+      toast.error(error.response?.data?.message || "Something went wrong!");
+    } finally {
+      setIsLoading(false); // Stop loading
     }
   };
 
   return (
     <div className="min-h-screen bg-[#0f261d] flex flex-col items-center p-8">
+      <ToastContainer />
       <h1 className="text-4xl mt-20 font-bold text-green-300 mb-8">
         {isLogin ? "Farmer Login" : "Farmer Registration"}
       </h1>
@@ -267,13 +284,22 @@ export default function FarmerForm() {
 
         <button
           type="submit"
-          className="mt-4 bg-green-500 text-white p-2 rounded w-full"
+          disabled={isLoading}
+          className={`mt-4 bg-green-500 text-white p-2 rounded w-full transition-all duration-300
+            ${isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-green-600'}`}
         >
-          {isLogin ? "Login" : "Register"}
+          {isLoading ? (
+            <div className="flex items-center justify-center">
+              <div className="w-5 h-5 border-t-2 border-b-2 border-white rounded-full animate-spin mr-2"></div>
+              {isLogin ? "Logging in..." : "Registering..."}
+            </div>
+          ) : (
+            isLogin ? "Login" : "Register"
+          )}
         </button>
 
         <p
-          className="mt-4 text-center text-blue-500 cursor-pointer"
+          className="mt-4 text-center text-blue-500 cursor-pointer hover:text-blue-700 transition-colors duration-300"
           onClick={() => setIsLogin(!isLogin)}
         >
           {isLogin
