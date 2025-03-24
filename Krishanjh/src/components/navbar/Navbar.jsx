@@ -163,12 +163,7 @@ export default function Navbar() {
         <div className="flex gap-8 items-center">
           {user ? (
             <>
-              <button
-                onClick={handleProfileClick}
-                className="text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium mr-2"
-              >
-                {translations[language].profile}
-              </button>
+
               <button
                 onClick={handleLogout}
                 className="text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
