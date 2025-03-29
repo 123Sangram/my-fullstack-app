@@ -30,9 +30,9 @@ const ProductList = ({ onProductSelect }) => {
       console.log('Farmers response:', response.data); // Debug log
       
       if (response.data.success && response.data.farmers) {
-        setFarmers(response.data.farmers);
+        // setFarmers(response.data.farmers);
       } else {
-        toast.error('No farmers found');
+        // toast.error('No farmers found');
       }
     } catch (error) {
       // console.error('Error fetching farmers:', error);
@@ -56,7 +56,7 @@ const ProductList = ({ onProductSelect }) => {
       console.log('Products response:', response.data); // Debug log
 
       if (response.data.success && response.data.products) {
-        setProducts(response.data.products);
+        // setProducts(response.data.products);
       } else {
         setProducts([]);
       }
