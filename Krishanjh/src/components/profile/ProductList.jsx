@@ -21,7 +21,7 @@ const ProductList = ({ onProductSelect }) => {
   const fetchFarmers = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:6500/api/farmer/all', {
+      const response = await axios.get('https://my-fullstack-app-5.onrender.com/api/farmer/all', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -44,8 +44,8 @@ const ProductList = ({ onProductSelect }) => {
     try {
       const token = localStorage.getItem('token');
       const url = selectedFarmer === 'all'
-        ? 'http://localhost:6500/api/products/all'
-        : `http://localhost:6500/api/products/farmer/${selectedFarmer}`;
+        ? 'https://my-fullstack-app-5.onrender.com/api/products/all'
+        : `https://my-fullstack-app-5.onrender.com/api/products/farmer/${selectedFarmer}`;
 
       const response = await axios.get(url, {
         headers: {
