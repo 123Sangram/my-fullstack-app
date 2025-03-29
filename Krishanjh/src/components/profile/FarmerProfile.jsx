@@ -45,7 +45,7 @@ const FarmerProfile = () => {
   const fetchFarmerProducts = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`https://github.com/123Sangram/my-fullstack-app/api/products/farmer/${user._id}`, {
+      const response = await axios.get(`https://my-fullstack-app-5.onrender.com/api/products/farmer/${user._id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProducts(response.data.products);
@@ -85,7 +85,7 @@ const FarmerProfile = () => {
 
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'https://github.com/123Sangram/my-fullstack-app/api/products/create',
+        'https://my-fullstack-app-5.onrender.com/api/products/create',
         formData,
         {
           headers: {
@@ -324,12 +324,7 @@ const FarmerProfile = () => {
           >
             My Products
           </button>
-          <button
-            onClick={logout}
-            className="ml-auto px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-          >
-            Logout
-          </button>
+
         </div>
 
         {/* Main Content */}
