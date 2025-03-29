@@ -126,7 +126,7 @@ const handlePasswordFocus = () => {
         }
 
         const response = await axios.post(
-          "http://localhost:6500/api/farmer/addfarmer",
+          "https://my-fullstack-app-5.onrender.com/api/farmer/addfarmer",
           formDataToSend,
           {
             headers: {
