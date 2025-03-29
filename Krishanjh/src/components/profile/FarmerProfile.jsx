@@ -50,7 +50,7 @@ const FarmerProfile = () => {
       });
       setProducts(response.data.products);
     } catch (error) {
-      toast.success('successfull fetch products');
+      // toast.success('successfull fetch products');
     }
   };
 
@@ -110,7 +110,7 @@ const FarmerProfile = () => {
         fetchFarmerProducts();
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Error adding product');
+      // toast.error(error.response?.data?.message || 'Error adding product');
     } finally {
       setLoading(false);
     }
