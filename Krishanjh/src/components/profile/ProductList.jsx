@@ -35,8 +35,8 @@ const ProductList = ({ onProductSelect }) => {
         toast.error('No farmers found');
       }
     } catch (error) {
-      console.error('Error fetching farmers:', error);
-      toast.error('Error fetching farmers list');
+      // console.error('Error fetching farmers:', error);
+      // toast.error('Error fetching farmers list');
     }
   };
 
@@ -61,8 +61,8 @@ const ProductList = ({ onProductSelect }) => {
         setProducts([]);
       }
     } catch (error) {
-      console.error('Error fetching products:', error);
-      toast.error('Error fetching products');
+      // console.error('Error fetching products:', error);
+      // toast.error('Error fetching products');
     } finally {
       setLoading(false);
     }
