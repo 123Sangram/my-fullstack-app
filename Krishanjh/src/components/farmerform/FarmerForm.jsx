@@ -262,7 +262,7 @@ export default function FarmerForm() {
             value={formData.email}
             onChange={handleChange}
             className="mt-2 p-2 w-full rounded"
-            placeholder="Enter your email"
+            placeholder="sangram@gmail.com"
             required
             autoComplete="email"
           />
@@ -276,7 +276,7 @@ export default function FarmerForm() {
             value={formData.password}
             onChange={handleChange}
             className="mt-2 p-2 w-full rounded"
-            placeholder="Enter your password"
+            placeholder="Sangram@123"
             required
             autoComplete="current-password"
           />
