@@ -45,12 +45,12 @@ const FarmerProfile = () => {
   const fetchFarmerProducts = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:6500/api/products/farmer/${user._id}`, {
+      const response = await axios.get(`https://github.com/123Sangram/my-fullstack-app/api/products/farmer/${user._id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProducts(response.data.products);
     } catch (error) {
-      // toast.success('successfull fetch products');
+      toast.success('successfull fetch products');
     }
   };
 
@@ -85,7 +85,7 @@ const FarmerProfile = () => {
 
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:6500/api/products/create',
+        'https://github.com/123Sangram/my-fullstack-app/api/products/create',
         formData,
         {
           headers: {
@@ -96,7 +96,7 @@ const FarmerProfile = () => {
       );
 
       if (response.data.success) {
-        // toast.success('Product added successfully!');
+        toast.success('Product added successfully!');
         setShowAddProduct(false);
         setProductForm({
           name: '',
@@ -110,7 +110,7 @@ const FarmerProfile = () => {
         fetchFarmerProducts();
       }
     } catch (error) {
-      // toast.error(error.response?.data?.message || 'Error adding product');
+      toast.error(error.response?.data?.message || 'Error adding product');
     } finally {
       setLoading(false);
     }
