@@ -27,7 +27,8 @@ export default function BuyerForm() {
     latitude: "",
     longitude: "",
   });
-
+const [showEmailPlaceholder, setShowEmailPlaceholder] = useState(true);
+const [showPasswordPlaceholder, setShowPasswordPlaceholder] = useState(true);
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name.startsWith("address.")) {
@@ -42,8 +43,33 @@ export default function BuyerForm() {
     } else {
       setFormData({ ...formData, [name]: value });
     }
+      if (name === "email" && value === "") {
+        setShowEmailPlaceholder(true);
+      }
   };
 
+const handleEmailFocus = () => {
+  if (showEmailPlaceholder) {
+    handleChange({
+      target: {
+        name: "email",
+        value: "saurabh@gmail.com",
+      },
+    });
+    setShowEmailPlaceholder(false);
+  }
+};
+const handlePasswordFocus = () => {
+  if (showPasswordPlaceholder) {
+    handleChange({
+      target: {
+        name: "password",
+        value: "Sangram@123",
+      },
+    });
+    setShowPasswordPlaceholder(false);
+  }
+};
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -325,32 +351,68 @@ export default function BuyerForm() {
           </>
         )}
 
-        <label className="block mb-4">
+        <div className="relative mb-4">
           <span className="text-gray-700">Email:</span>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="mt-2 p-2 w-full rounded"
-            placeholder="saurabh@gmail.com"
-            required
-            autoComplete="email"
-          />
-        </label>
+          <div className="relative">
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              onFocus={handleEmailFocus}
+              className="mt-2 p-2 w-full rounded border border-gray-300"
+              required
+              autoComplete="email"
+            />
+            {showEmailPlaceholder && (
+              <div
+                className="absolute left-3 top-3 text-gray-400 cursor-text"
+                onClick={() => {
+                  handleChange({
+                    target: {
+                      name: "email",
+                      value: "saurabh@gmail.com",
+                    },
+                  });
+                  setShowEmailPlaceholder(false);
+                }}
+              >
+                saurabh@gmail.com
+              </div>
+            )}
+          </div>
+        </div>
 
-        <label className="block mb-6">
+       <label className="block mb-6 relative">
           <span className="text-gray-700">Password:</span>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Sangram@123"
-            className="mt-2 p-2 w-full rounded"
-            required
-            autoComplete={isLogin ?   "current-password" : "new-password"}
-          />
+          <div className="relative">
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              onFocus={handlePasswordFocus}
+              className="mt-2 p-2 w-full rounded border border-gray-300"
+              required
+              autoComplete={isLogin ? "current-password" : "new-password"}
+            />
+            {showPasswordPlaceholder && (
+              <div
+                className="absolute left-3 top-3 text-gray-400 cursor-text"
+                onClick={() => {
+                  handleChange({
+                    target: {
+                      name: "password",
+                      value: "Sangram@123",
+                    },
+                  });
+                  setShowPasswordPlaceholder(false);
+                }}
+              >
+                Sangram@123
+              </div>
+            )}
+          </div>
         </label>
 
         <button
