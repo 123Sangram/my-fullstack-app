@@ -333,6 +333,7 @@ export default function BuyerForm() {
             value={formData.email}
             onChange={handleChange}
             className="mt-2 p-2 w-full rounded"
+            placeholder="saurabh@gmail.com"
             required
             autoComplete="email"
           />
@@ -345,7 +346,7 @@ export default function BuyerForm() {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            
+            placeholder="Sangram@123"
             className="mt-2 p-2 w-full rounded"
             required
             autoComplete={isLogin ?   "current-password" : "new-password"}
