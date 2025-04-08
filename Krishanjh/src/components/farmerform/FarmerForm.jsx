@@ -301,7 +301,7 @@ const handlePasswordFocus = () => {
                   handleChange({
                     target: {
                       name: "email",
-                      value: "saurabh@gmail.com",
+                      value: "sangram@gmail.com",
                     },
                   });
                   setShowEmailPlaceholder(false);
