@@ -5,15 +5,19 @@ const {
   loginUser, 
   getProfile,
   updateProfile,
-  getAllUsers
-} = require('../controllers/userController');
+  getAllUsers,
+  addNewProduct
+} = require('../controllers/userController.js');
 const { protect } = require('../middleware/authMiddleware');
+const upload = require('../middlewares/multer.js');
 
 // Public routes
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 
-// Protected routes (require authentication)
+router.post('/addNewProduct', protect, upload.single('productImage'), addNewProduct);
+
+// Protected routes
 router.get('/profile', protect, getProfile);
 router.put('/profile', protect, updateProfile);
 router.get('/', protect, getAllUsers);

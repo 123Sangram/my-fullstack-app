@@ -7,6 +7,7 @@ const fs = require('fs');
 const Message = require('../models/messageModel');
 const Farmer = require('../models/userModel');
 
+
 const addFarmer = async (req, res) => {
   try {
     console.log("Registration request body:", req.body);
@@ -326,6 +327,39 @@ const getAllFarmers = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const addNewProduct = asyncHandler(async (req, res) => {
+    const { productname, description, price, quantity, categeory, productImage } = req.body;
+
+    if (!productname || !description || !price || !quantity || !categeory || !productImage) {
+        res.status(400);
+        throw new ApiError(400, "Please provide all required fields");
+    }
+    const imageProduct = req.files?.productImage[0]?.path
+    if(!imageProduct){
+      throw ApiError(503,"file is not uploaded by the some issue of cloudinary")
+    }
+
+    const successfullupload = connectCloudinary(imageProduct)
+
+       if (!successfullupload) {
+        throw new ApiError(400, "Avatar file is required")
+    }
+
+    const product = await addProduct.create({
+        productname,
+        description,
+        price,
+        quantity,
+        categeory,
+        productImage:imageProduct.url,
+        createBy: req.user._id
+    });
+
+    res.status(201).json({
+        success: true,
+        data: product
+    });
+});
 
 module.exports = {
   addFarmer,

@@ -1,6 +1,13 @@
+
+
 const User = require('../models/userModel');
+const { asyncHandler } = require('../utils/asyncHandler');
 const generateToken = require('../utils/generateToken');
 const bcrypt = require('bcryptjs');
+const { ApiError } = require('../utils/ApiError');
+const addProduct = require("../models/addProduct.model.js");
+const asyncHandler = require("../utils/asyncHandler.js");
+const connectCloudinary = require('../config/cloudinary.js');
 
 // @desc    Register a new user
 // @route   POST /api/users/register
@@ -181,10 +188,58 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const getCurrentUser = asyncHandler(async(req, res) => {
+    return res
+    .status(200)
+    .json(new ApiResponse(
+        200,
+        req.user,
+        "User fetched successfully"
+    ))
+})
+
+// Add a new product
+const addNewProduct = asyncHandler(async (req, res) => {
+    const { productname, description, price, quantity, categeory, productImage } = req.body;
+
+    if (!productname || !description || !price || !quantity || !categeory || !productImage) {
+        res.status(400);
+        throw new ApiError(400, "Please provide all required fields");
+    }
+    const imageProduct = req.files?.productImage[0]?.path
+    if(!imageProduct){
+      throw ApiError(503,"file is not uploaded by the some issue of cloudinary")
+    }
+
+    const successfullupload = connectCloudinary(imageProduct)
+
+       if (!successfullupload) {
+        throw new ApiError(400, "Avatar file is required")
+    }
+
+    const product = await addProduct.create({
+        productname,
+        description,
+        price,
+        quantity,
+        categeory,
+        productImage:imageProduct.url,
+        createBy: req.user._id
+    });
+
+    res.status(201).json({
+        success: true,
+        data: product
+    });
+});
+
+
 module.exports = {
   registerUser,
   loginUser,
   getProfile,
   updateProfile,
-  getAllUsers
+  getAllUsers,
+  addNewProduct,
+  getCurrentUser
 };

@@ -19,6 +19,7 @@ const connectCloudinary = require('./config/cloudinary')
 const adminRouter = require('./routes/adminRoute');
 const buyerRouter = require('./routes/buyerRoute');
 const chatRouter = require('./routes/chatRoute');
+const router = require('./routes/userRoutes')
 // Fix: Comment out userRoutes temporarily until we fix the generateToken issue
 // const userRoutes = require('./routes/userRoutes');
 const app = express()
@@ -53,6 +54,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 app.use('/api/farmer', adminRouter)
 app.use('/api/buyer', buyerRouter)
 app.use('/api/chat', chatRouter)
+app.use('/api/user',router)
 
 // Socket.io connection handling
 io.on('connection', (socket) => {
