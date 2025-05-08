@@ -1,12 +1,12 @@
 
 
 const User = require('../models/userModel');
-const { asyncHandler } = require('../utils/asyncHandler');
+const  asyncHandler  = require('../utils/asyncHandler');
 const generateToken = require('../utils/generateToken');
 const bcrypt = require('bcryptjs');
 const { ApiError } = require('../utils/ApiError');
 const addProduct = require("../models/addProduct.model.js");
-const asyncHandler = require("../utils/asyncHandler.js");
+
 const connectCloudinary = require('../config/cloudinary.js');
 
 // @desc    Register a new user
@@ -42,6 +42,7 @@ const registerUser = async (req, res) => {
           token: generateToken(user._id)
         }
       });
+
     } else {
       res.status(400).json({
         success: false,

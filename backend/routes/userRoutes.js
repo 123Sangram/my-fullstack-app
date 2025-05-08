@@ -15,7 +15,7 @@ const upload = require('../middlewares/multer.js');
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 
-router.post('/addNewProduct', protect, upload.single('productImage'), addNewProduct);
+// router.post('/addNewProduct', protect, upload.single('productImage'), addNewProduct);
 
 // Protected routes
 router.get('/profile', protect, getProfile);

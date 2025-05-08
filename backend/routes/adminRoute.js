@@ -1,5 +1,5 @@
 const express = require('express')
-const { addFarmer, loginFarmer, loginAdmin, getFarmer, updateFarmer, deleteFarmer, getAllFarmers, getUsers, sendMessage, getMessages } = require('../controllers/adminController');
+const { addFarmer, loginFarmer, loginAdmin, getFarmer, updateFarmer, deleteFarmer, getAllFarmers, getUsers, sendMessage, getMessages, addNewProduct } = require('../controllers/adminController');
 const upload = require('../middlewares/multer.js');
 const auth = require('../middleware/auth');
 
@@ -9,7 +9,7 @@ const adminRouter = express.Router()
 adminRouter.post('/addfarmer', upload.single('image'), addFarmer)
 adminRouter.post('/login', loginFarmer)
 adminRouter.post('/admin/login', loginAdmin)
-
+adminRouter.post('/addNewProduct', upload.single('productImage'), addNewProduct);
 // Protected routes
 adminRouter.get('/farmer/:id', auth, getFarmer)
 adminRouter.put('/farmer/:id', auth, updateFarmer)

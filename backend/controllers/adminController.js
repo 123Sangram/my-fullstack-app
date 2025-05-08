@@ -5,7 +5,10 @@ const cloudinary = require('cloudinary').v2;
 const farmerModel = require('../models/userModel');
 const fs = require('fs');
 const Message = require('../models/messageModel');
+const  asyncHandler  = require('../utils/asyncHandler');
 const Farmer = require('../models/userModel');
+const { ApiError } = require('../utils/ApiError');
+const addProduct = require("../models/addProduct.model.js");
 
 
 const addFarmer = async (req, res) => {
@@ -327,6 +330,7 @@ const getAllFarmers = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 const addNewProduct = asyncHandler(async (req, res) => {
     const { productname, description, price, quantity, categeory, productImage } = req.body;
 
@@ -361,6 +365,7 @@ const addNewProduct = asyncHandler(async (req, res) => {
     });
 });
 
+
 module.exports = {
   addFarmer,
   loginFarmer,
@@ -371,5 +376,6 @@ module.exports = {
   getAllFarmers,
   getUsers,
   sendMessage,
+  addNewProduct,
   getMessages
 };
