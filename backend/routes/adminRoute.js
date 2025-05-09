@@ -9,7 +9,7 @@ const adminRouter = express.Router()
 adminRouter.post('/addfarmer', upload.single('image'), addFarmer)
 adminRouter.post('/login', loginFarmer)
 adminRouter.post('/admin/login', loginAdmin)
-adminRouter.post('/addNewProduct', upload.single('productImage'), addNewProduct);
+// adminRouter.post('/addNewProduct', upload.single('productImage'), addNewProduct);
 // Protected routes
 adminRouter.get('/farmer/:id', auth, getFarmer)
 adminRouter.put('/farmer/:id', auth, updateFarmer)

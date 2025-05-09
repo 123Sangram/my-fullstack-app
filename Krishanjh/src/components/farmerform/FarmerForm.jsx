@@ -74,7 +74,7 @@ const handlePasswordFocus = () => {
         const { email, password } = formData;
         
         const response = await axios.post(
-          "https://my-fullstack-app-5.onrender.com/api/farmer/addNewProduct",
+          "https://my-fullstack-app-5.onrender.com/api/products/create",
           { email, password },
           {
             headers: {
