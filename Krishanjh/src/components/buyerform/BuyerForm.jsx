@@ -103,9 +103,9 @@ const handlePasswordFocus = () => {
         const response = await loginPromise;
 
         if (response.data.success) {
-          // Start navigation immediately
+          
           navigate("/frontpage");
-          // Handle login in background
+        
           await login(response.data.buyer, response.data.token, true);
         }
       } else {
@@ -138,7 +138,7 @@ const handlePasswordFocus = () => {
 
         if (response.data.success) {
           if (response.data.token && response.data.buyer) {
-            // Auto login after registration
+            
             toast.success("Registration Successful! Logging you in...");
             await login(response.data.buyer, response.data.token, true);
             navigate("/frontpage");

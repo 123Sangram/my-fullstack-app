@@ -1,96 +1,64 @@
+import React, { useState } from 'react';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 
 const OrderTracking = () => {
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [productName, setProductName] = useState('');
+  const [quantity, setQuantity] = useState(1);
+  const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
+  const handleOrder = async () => {
+    const buyerId = localStorage.getItem("userId");
 
-  const fetchOrders = async () => {
-    try {
-      const response = await axios.get('http://localhost:6500/api/orders/buyer');
-      setOrders(response.data.orders);
-    } catch (error) {
-      toast.error('Error fetching orders');
-    } finally {
-      setLoading(false);
+    if (!buyerId) {
+      setMessage("sorry have some issue in server ");
+      return;
     }
-  };
 
-  const cancelOrder = async (orderId) => {
     try {
-      await axios.post(`http://localhost:6500/api/orders/${orderId}/cancel`);
-      toast.success('Order cancelled successfully');
-      fetchOrders();
-    } catch (error) {
-      toast.error('Error cancelling order');
+      const res = await axios.post("https://my-fullstack-app-5.onrender.com/api/buyer/addorder", {
+        buyerId,
+        productName,
+        quantity,
+      });
+
+      setMessage(res.data.message);
+    } catch (err) {
+      setMessage(err.response?.data?.message || "Order failed");
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6">My Orders</h2>
-      
-      <div className="space-y-4">
-        {orders.map(order => (
-          <div key={order._id} className="bg-white p-4 rounded-lg shadow">
-            <div className="flex justify-between items-start">
-              <div>
-                <h3 className="font-semibold">{order.product.name}</h3>
-                <p className="text-gray-600">₹{order.amount}</p>
-                <p className="text-sm text-gray-500">
-                  Order ID: {order._id}
-                </p>
-                <p className="text-sm text-gray-500">
-                  Status: <span className={`font-semibold ${
-                    order.status === 'DELIVERED' ? 'text-green-600' :
-                    order.status === 'CANCELLED' ? 'text-red-600' :
-                    'text-yellow-600'
-                  }`}>{order.status}</span>
-                </p>
-              </div>
-              
-              {order.status === 'PENDING' && (
-                <button
-                  onClick={() => cancelOrder(order._id)}
-                  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-                >
-                  Cancel Order
-                </button>
-              )}
-            </div>
+    <div className="p-4 border rounded shadow-md max-w-sm">
+      <h2 className="text-lg font-bold mb-4">Place Your Order</h2>
 
-            {/* Order Timeline */}
-            <div className="mt-4">
-              <div className="flex items-center">
-                <div className={`w-4 h-4 rounded-full ${
-                  order.status !== 'CANCELLED' ? 'bg-green-500' : 'bg-gray-300'
-                }`} />
-                <div className="h-0.5 flex-1 bg-gray-200">
-                  <div className={`h-full ${
-                    order.status === 'PROCESSING' || order.status === 'DELIVERED' 
-                      ? 'bg-green-500' : 'bg-gray-200'
-                  }`} style={{ width: '50%' }} />
-                </div>
-                <div className={`w-4 h-4 rounded-full ${
-                  order.status === 'DELIVERED' ? 'bg-green-500' : 'bg-gray-300'
-                }`} />
-              </div>
-              <div className="flex justify-between text-sm mt-1">
-                <span>Ordered</span>
-                <span>Processing</span>
-                <span>Delivered</span>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      <label className="block mb-1 font-medium">Product Name</label>
+      <input
+        type="text"
+        className="border p-2 w-full mb-3"
+        placeholder="Enter product name"
+        value={productName}
+        onChange={(e) => setProductName(e.target.value)}
+      />
+
+      <label className="block mb-1 font-medium">Quantity</label>
+      <input
+        type="number"
+        className="border p-2 w-full mb-4"
+        min="1"
+        value={quantity}
+        onChange={(e) => setQuantity(Number(e.target.value))}
+      />
+
+      <button
+        onClick={handleOrder}
+        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
+      >
+        Buy Now
+      </button>
+
+      {message && <p className="mt-3 text-sm text-blue-700">{message}</p>}
     </div>
   );
 };
 
-export default OrderTracking; 
+export default OrderTracking;

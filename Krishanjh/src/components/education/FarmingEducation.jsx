@@ -40,7 +40,7 @@ export default function FarmingEducation() {
               Next Tip
             </button>
             <Link
-              to={`/videos/${currentSlide}`}
+              to="/about-contract-farming"
               className="bg-blue-600 hover:bg-blue-800 text-white px-8 py-3 rounded-xl shadow-lg transition-transform transform hover:scale-110"
             >
               Learn More

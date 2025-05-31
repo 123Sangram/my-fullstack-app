@@ -74,7 +74,9 @@ const handlePasswordFocus = () => {
         const { email, password } = formData;
         
         const response = await axios.post(
-          "https://www.bighaat.com/collections/seeds-online",
+          "https://my-fullstack-app-5.onrender.com/api/farmer/login",
+          // "http://localhost:6500/api/farmer/login",
+
           { email, password },
           {
             headers: {
@@ -127,6 +129,7 @@ const handlePasswordFocus = () => {
 
         const response = await axios.post(
           "https://my-fullstack-app-5.onrender.com/api/farmer/addfarmer",
+          // "http://localhost:6500/api/farmer/addfarmer",
           formDataToSend,
           {
             headers: {

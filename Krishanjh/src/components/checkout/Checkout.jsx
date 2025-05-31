@@ -17,7 +17,9 @@ const Checkout = () => {
 
   const fetchProductDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:6500/api/products/${productId}`);
+      const response = await axios.get(
+        // `http://localhost:6500/api/products/${productId}`
+      );
       setProduct(response.data.product);
     } catch (error) {
       toast.error('Error fetching product details');
@@ -30,7 +32,9 @@ const Checkout = () => {
   const handlePayment = async () => {
     try {
       // Create order first
-      const orderResponse = await axios.post('http://localhost:6500/api/orders/create', {
+      const orderResponse = await axios.post(
+        // 'http://localhost:6500/api/orders/create', 
+        {
         productId,
         address,
         paymentMethod
@@ -59,7 +63,9 @@ const Checkout = () => {
 
         case 'cod':
           // Handle Cash on Delivery
-          await axios.post('http://localhost:6500/api/orders/cod-confirm', { orderId });
+          await axios.post(
+            // 'http://localhost:6500/api/orders/cod-confirm', 
+            { orderId });
           toast.success('Order placed successfully!');
           navigate('/orders');
           break;
@@ -76,7 +82,9 @@ const Checkout = () => {
 
   const handlePaymentSuccess = async (paymentResponse, orderId) => {
     try {
-      await axios.post('http://localhost:6500/api/orders/payment-success', {
+      await axios.post(
+        // 'http://localhost:6500/api/orders/payment-success',
+         {
         orderId,
         paymentId: paymentResponse.razorpay_payment_id,
       });

@@ -6,7 +6,8 @@ import { useAuth } from '../../context/AuthContext';
 import Navbar from '../navbar/Navbar';
 import Checkout from '../checkout/Checkout';
 import OrderTracking from '../orders/OrderTracking';
-import ProductList from '../products/ProductList';
+
+// import ProductList from '../';
 
 const BuyerProfile = () => {
   const { user, logout } = useAuth();
@@ -53,6 +54,7 @@ const BuyerProfile = () => {
         }} />;
       case 'orders':
         return <OrderTracking />;
+        
       case 'checkout':
         return selectedProduct ? (
           <Checkout 
@@ -128,16 +130,16 @@ const BuyerProfile = () => {
           >
             Profile
           </button>
-          <button
-            onClick={() => setActiveTab('products')}
-            className={`px-6 py-2 rounded-lg transition-all duration-300 ${
-              activeTab === 'products'
-                ? 'bg-green-500 text-white'
-                : 'bg-white text-green-500 hover:bg-green-50'
-            }`}
-          >
-            Browse Products
-          </button>
+     <button
+  onClick={() => navigate('/productlist')}
+  className={`px-6 py-2 rounded-lg transition-all duration-300 ${
+    activeTab === 'products'
+      ? 'bg-green-500 text-white'
+      : 'bg-white text-green-500 hover:bg-green-50'
+  }`}
+>
+  Browse Products
+</button>
           <button
             onClick={() => setActiveTab('orders')}
             className={`px-6 py-2 rounded-lg transition-all duration-300 ${

@@ -4,8 +4,8 @@ const { getAllUsers, getMessages, sendMessage } = require('../controllers/chatCo
 const auth = require('../middleware/auth');
 
 // Apply auth middleware to each route individually for better control
-router.get('/users', auth, getAllUsers);
-router.get('/messages', auth, getMessages);
-router.post('/send', auth, sendMessage);
+router.get('/users',  getAllUsers);
+router.get('/messages',  getMessages);
+router.post('/send', sendMessage);
 
 module.exports = router; 

@@ -5,6 +5,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { useAuth } from "../../context/AuthContext";
 import Navbar from '../navbar/Navbar';
 
+
 const FarmerProfile = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ const FarmerProfile = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showAddProduct, setShowAddProduct] = useState(false);
+
+  
   
   // Product form state
   const [productForm, setProductForm] = useState({
@@ -21,8 +24,8 @@ const FarmerProfile = () => {
     description: '',
     price: '',
     quantity: '',
-    category: 'vegetables',
-    image: null
+    categeory: 'vegetables',
+    avatar: null
   });
   const [imagePreview, setImagePreview] = useState(null);
 
@@ -42,17 +45,31 @@ const FarmerProfile = () => {
     }
   }, [user, navigate]);
 
+// get all farmers
+
+
+
   const fetchFarmerProducts = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`https://my-fullstack-app-5.onrender.com/api/products/farmer/${user._id}`, {
+       console.log(token)
+      const response = await axios.get(
+    //     `https://my-fullstack-app-5.onrender.com/api/products/farmer/${user._id}`
+            `https://my-fullstack-app-5.onrender.com/api/farmer/products`
+            
+        , {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setProducts(response.data.products);
+      
+
+     
+         console.log("Fetched products:", response.data.products);
+    setProducts(response.data.products);
     } catch (error) {
-      // toast.success('successfull fetch products');
+      toast.error('some issue to fetch products',error);
     }
   };
+  // http://localhost:6500/api/farmer/products/${user._id}
 
   const handleProductChange = (e) => {
     const { name, value } = e.target;
@@ -67,60 +84,69 @@ const FarmerProfile = () => {
     if (file) {
       setProductForm(prev => ({
         ...prev,
-        image: file
+        avatar: file
       }));
       setImagePreview(URL.createObjectURL(file));
     }
   };
 
   const handleAddProduct = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      const formData = new FormData();
-      Object.keys(productForm).forEach(key => {
-        formData.append(key, productForm[key]);
-      });
+  try {
+    const formData = new FormData();
+    formData.append('productname', productForm.name);
+    formData.append('description', productForm.description);
+    formData.append('price', productForm.price);
+    formData.append('quantity', productForm.quantity);
+    formData.append('categeory', productForm.categeory);
 
-      const token = localStorage.getItem('token');
-      const response = await axios.post(
-        'https://my-fullstack-app-5.onrender.com/api/products/create',
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      );
-
-      if (response.data.success) {
-        toast.success('Product added successfully!');
-        setShowAddProduct(false);
-        setProductForm({
-          name: '',
-          description: '',
-          price: '',
-          quantity: '',
-          category: 'vegetables',
-          image: null
-        });
-        setImagePreview(null);
-        fetchFarmerProducts();
-      }
-    } catch (error) {
-      // toast.error(error.response?.data?.message || 'Error adding product');
-    } finally {
-      setLoading(false);
+    if (productForm.avatar) {
+      formData.append('avatar', productForm.avatar); // ✅ Correct field name
     }
-  };
+
+    const token = localStorage.getItem('token');
+    const response = await axios.post(
+       // 'https://my-fullstack-app-5.onrender.com/api/products/create',
+      "https://my-fullstack-app-5.onrender.com/api/farmer/addNewProduct",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
+
+    if (response.data.success) {
+      toast.success('Product added successfully!');
+      setShowAddProduct(false);
+      setProductForm({
+        productname: '',
+        description: '',
+        price: '',
+        quantity: '',
+        categeory: 'vegetables',
+        avatar: null
+      });
+      setImagePreview(null);
+      fetchFarmerProducts();
+    }
+  } catch (error) {
+    toast.error(error.response?.data?.message || 'Error adding product');
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const menuItems = [
     { title: "Chat with Buyers", path: "/chatbot", icon: "💬" },
     { title: "Market Analysis", path: "/MarketTrendAnalyzer", icon: "📊" },
     { title: "Contract Farming", path: "/contract", icon: "📝" },
     { title: "Legal Support", path: "/legal", icon: "⚖️" },
+    { title: "Buyer List", path: "/buyerlist", icon: "🛒" }
   ];
 
   const handleLogout = () => {
@@ -159,7 +185,7 @@ const FarmerProfile = () => {
         {products.map(product => (
           <div key={product._id} className="bg-white rounded-lg shadow-md overflow-hidden">
             <img
-              src={product.image}
+              src={product.avatar}
               alt={product.name}
               className="w-full h-48 object-cover"
             />
@@ -168,7 +194,7 @@ const FarmerProfile = () => {
               <p className="text-gray-600 mt-2">{product.description}</p>
               <p className="text-green-600 font-bold mt-2">₹{product.price}</p>
               <p className="text-gray-500">Quantity: {product.quantity}</p>
-              <p className="text-gray-500">Category: {product.category}</p>
+              <p className="text-gray-500">Categeory: {product.categeory}</p>
             </div>
           </div>
         ))}
@@ -187,6 +213,7 @@ const FarmerProfile = () => {
             <label className="block text-gray-700 mb-2">Product Image</label>
             <input
               type="file"
+              name="avatar" 
               accept="image/*"
               onChange={handleImageChange}
               className="w-full"
@@ -297,9 +324,9 @@ const FarmerProfile = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-[#243F32]">
       <ToastContainer />
-      <Navbar />
+      {/* <Navbar /> */}
       
       <div className="container mx-auto px-4 py-8 mt-16">
         {/* Navigation Tabs */}
@@ -324,7 +351,7 @@ const FarmerProfile = () => {
           >
             My Products
           </button>
-
+   
         </div>
 
         {/* Main Content */}
@@ -421,6 +448,7 @@ const FarmerProfile = () => {
           ) : (
             // Products Content
             renderProducts()
+
           )}
         </div>
       </div>

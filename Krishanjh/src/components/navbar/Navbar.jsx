@@ -103,9 +103,9 @@ export default function Navbar() {
             (key, index) => (
               <motion.li
                 key={index}
-                whileHover={{ scale: 1.2, rotate: 360 }}
+                whileHover={{ scale: 1.2, rotate: 0 }}
                 whileTap={{ scale: 0.9 }}
-                className="cursor-pointer transition-transform relative"
+                className="cursor-pointer transition-transform relative "
               >
                 <Link to={`/${key === "home" ? "frontpage" : key}`}>
                   {translations[language][key]}
@@ -122,7 +122,7 @@ export default function Navbar() {
           
           {/* About Link */}
           <motion.li
-            whileHover={{ scale: 1.2, rotate: 360 }}
+            whileHover={{ scale: 1.2, rotate: 0 }}
             whileTap={{ scale: 0.9 }}
             className="cursor-pointer transition-transform relative"
           >
@@ -141,9 +141,9 @@ export default function Navbar() {
             (key, index) => (
               <motion.li
                 key={index}
-                whileHover={{ scale: 1.2, rotate: 360 }}
+                whileHover={{ scale: 1.2, rotate: 0 }}
                 whileTap={{ scale: 0.9 }}
-                className="cursor-pointer transition-transform relative"
+                className="cursor-pointer transition-transform relative "
               >
                 <Link to={`/${key}`}>
                   {translations[language][key]}
@@ -164,12 +164,12 @@ export default function Navbar() {
           {user ? (
             <>
 
-              <button
-                onClick={handleLogout}
-                className="text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
-              >
-                {translations[language].callUs}
-              </button>
+          <a
+  href="tel:6386054411"
+  className="text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
+>
+  {translations[language].callUs}
+</a>
             </>
           ) : (
             <>

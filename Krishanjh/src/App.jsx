@@ -17,6 +17,9 @@ import MidPage from "./components/midpage/MidPage";
 import BuyerProfile from "./components/profile/BuyerProfile";
 import FarmerProfile from "./components/profile/FarmerProfile";
 import ReadMore from "./components/secondPage/ReadMore";
+import AllFarmers from "./components/profile/AllFarmers";
+import BuyerList from "./components/profile/BuyerList";
+import ProductList from "./components/profile/ProductList";
 
 
 function App() {
@@ -35,6 +38,7 @@ function App() {
         <Route path="/chatbot" element={<ChatBot />} />
         <Route path="/faq" element={<Faq />} />
         <Route path="/support" element={<Support />} />
+        <Route path="/allfarmers" element={<AllFarmers/>} />
         <Route
           path="/about-contract-farming"
           element={<AboutContractFarming />}
@@ -43,6 +47,8 @@ function App() {
         <Route path="/farmer-profile" element={<FarmerProfile />} />
         <Route path="/buyer-profile" element={<BuyerProfile />} />
         <Route path="/readmore" element={<ReadMore/>} />
+         <Route path="/buyerlist" element={<BuyerList/>} />
+          <Route path="/productlist" element={<ProductList/>} />
       </Routes>
     </Router>
   );

@@ -43,4 +43,11 @@ const auth = async (req, res, next) => {
   }
 };
 
-module.exports = auth; 
+//  authentication for fetch
+
+
+
+
+
+module.exports = auth;
+ 

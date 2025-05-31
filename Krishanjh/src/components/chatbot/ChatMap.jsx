@@ -12,7 +12,6 @@ const containerStyle = {
 };
 
 const ChatMap = ({ selectedUser, currentUser }) => {
-  // Using a temporary API key - Replace with your own for production
   const GOOGLE_MAPS_API_KEY = 'AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg';
   
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -31,7 +30,6 @@ const ChatMap = ({ selectedUser, currentUser }) => {
     lng: 78.9629
   };
 
-  // Create dummy locations if real ones aren't available
   const dummyFarmerLocation = {
     lat: 28.6139,
     lng: 77.2090
@@ -42,20 +40,17 @@ const ChatMap = ({ selectedUser, currentUser }) => {
     lng: 77.1025
   };
 
-  // Get user locations with fallbacks
   const getUserLocation = (user) => {
     if (user?.location?.lat && user?.location?.lng) {
       return user.location;
     }
     
-    // If the user is a buyer, use buyer dummy location, otherwise use farmer location
     if (user?.userType === 'buyer') {
       return dummyBuyerLocation;
     }
     return dummyFarmerLocation;
   };
 
-  // Custom marker icons
   const currentUserIcon = {
     url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
     scaledSize: { width: 40, height: 40 }
@@ -67,7 +62,7 @@ const ChatMap = ({ selectedUser, currentUser }) => {
   };
 
   useEffect(() => {
-    // Try to get actual location
+ 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -77,27 +72,24 @@ const ChatMap = ({ selectedUser, currentUser }) => {
           };
           setCurrentLocation(location);
           
-          // Calculate distance if selected user exists
           const userLocation = getUserLocation(selectedUser);
           calculateDistance(location, userLocation);
         },
         (error) => {
           console.error('Error getting location:', error);
-          // Use fallback location based on current user type
           const userLocation = getUserLocation(currentUser);
           setCurrentLocation(userLocation);
           
-          // Calculate distance using fallback locations
           const selectedUserLocation = getUserLocation(selectedUser);
           calculateDistance(userLocation, selectedUserLocation);
         }
       );
     } else {
-      // If geolocation not supported, use fallback
+   
       const userLocation = getUserLocation(currentUser);
       setCurrentLocation(userLocation);
       
-      // Calculate distance using fallback locations
+   
       const selectedUserLocation = getUserLocation(selectedUser);
       calculateDistance(userLocation, selectedUserLocation);
     }
@@ -106,7 +98,7 @@ const ChatMap = ({ selectedUser, currentUser }) => {
   const calculateDistance = (point1, point2) => {
     if (!point1 || !point2) return;
     
-    const R = 6371; // Earth's radius in km
+    const R = 6371;
     const dLat = toRad(point2.lat - point1.lat);
     const dLon = toRad(point2.lng - point1.lng);
     const lat1 = toRad(point1.lat);
@@ -123,10 +115,9 @@ const ChatMap = ({ selectedUser, currentUser }) => {
     return value * Math.PI / 180;
   };
 
-  // Get selected user location with fallback
+ 
   const selectedUserLocation = selectedUser ? getUserLocation(selectedUser) : null;
 
-  // Calculate center point between users
   const center = selectedUserLocation && currentLocation ? {
     lat: (currentLocation.lat + selectedUserLocation.lat) / 2,
     lng: (currentLocation.lng + selectedUserLocation.lng) / 2

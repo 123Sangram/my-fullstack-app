@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 import { useAuth } from '../../context/AuthContext';
 import './ChatBot.css';
+import ChatMap from './ChatMap';
 
 const ChatBot = () => {
   const [users, setUsers] = useState([]);
@@ -18,10 +19,12 @@ const ChatBot = () => {
   const { user } = useAuth();
   const userType = localStorage.getItem('userType');
 
-  // Initialize socket connection
+ 
   useEffect(() => {
     try {
-      const newSocket = io("https://my-fullstack-app-5.onrender.com");
+      const newSocket = io(
+        "https://my-fullstack-app-5.onrender.com"
+      );
       setSocket(newSocket);
       
       return () => {
@@ -87,7 +90,7 @@ const ChatBot = () => {
         {
           headers: { Authorization: `Bearer ${token}` },
           params: {
-            userType: userType === "true" ? "buyer" : "farmer", // true means buyer, false means farmer
+            userType: userType === "true" ? "buyer" : "farmer",
             userId: user?._id || user?.id,
           },
         }
@@ -145,35 +148,32 @@ const ChatBot = () => {
     }
   };
 
-  const handleSendMessage = async (e) => {
-    e.preventDefault();
+ const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedUser) return;
 
     // Clear any previous errors
     setError(null);
     
-    // Make sure we have the current user ID
+   
     if (!user || (!user._id && !user.id)) {
       setError('User information is missing. Please log in again.');
       return;
     }
     
-    const userId = user._id || user.id; // Handle both _id and id properties
+    const userId = user._id || user.id; 
     
-    // Store message locally before sending
+  
     const tempMessage = {
-      _id: Date.now().toString(), // Temporary ID
+      _id: Date.now().toString(), 
       senderId: userId,
       receiverId: selectedUser._id,
       content: newMessage.trim(),
       timestamp: new Date(),
-      isSending: true // Flag to indicate message is being sent
+      isSending: true 
     };
-    
-    // Add to messages array immediately for better UX
+ 
     setMessages(prev => [...prev, tempMessage]);
-    
-    // Clear input field
+  
     const messageContent = newMessage.trim();
     setNewMessage('');
 
@@ -206,7 +206,7 @@ const ChatBot = () => {
       console.log("Message send response:", response.data);
 
       if (response.data.success) {
-        // Update the temporary message with server data
+      
         setMessages(prev => 
           prev.map(msg => 
             msg._id === tempMessage._id 
@@ -215,22 +215,18 @@ const ChatBot = () => {
           )
         );
 
-        // Emit message through socket
         if (socket) {
           socket.emit('send_message', response.data.message);
         }
       } else {
-        // Handle API error with success: false
         setError(response.data.message || 'Failed to send message');
         
-        // Remove the temporary message
         setMessages(prev => prev.filter(msg => msg._id !== tempMessage._id));
       }
     } catch (err) {
       console.error('Error sending message:', err);
       setError('Failed to send message. Please try again.');
       
-      // Remove the temporary message
       setMessages(prev => prev.filter(msg => msg._id !== tempMessage._id));
     }
   };
@@ -322,21 +318,32 @@ const ChatBot = () => {
 
         {/* Message Input */}
         <div className="p-4 border-t">
-          <div className="flex">
-            <input
-              type="text"
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              placeholder="Type a message..."
-              className="flex-1 border rounded-l-lg p-2 focus:outline-none focus:border-green-500"
-            />
-            <button
-              onClick={handleSendMessage}
-              className="bg-green-500 text-white px-6 py-2 rounded-r-lg hover:bg-green-600"
-            >
-              Send
-            </button>
-          </div>
+
+<div className="flex">
+<input
+  type="text"
+  value={newMessage}
+  onChange={(e) => setNewMessage(e.target.value)}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault(); 
+      handleSendMessage();
+    }
+  }}
+  placeholder="Type a message..."
+  className="flex-1 border rounded-l-lg p-2 focus:outline-none focus:border-green-500"
+/>
+
+<button
+  onClick={handleSendMessage}
+  className="bg-green-500 text-white px-6 py-2 rounded-r-lg hover:bg-green-600"
+>
+  Send
+</button>
+</div>
+
+
+
         </div>
       </div>
     </div>
@@ -344,3 +351,4 @@ const ChatBot = () => {
 };
 
 export default ChatBot;
+

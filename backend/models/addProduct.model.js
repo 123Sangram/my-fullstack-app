@@ -18,11 +18,11 @@ const ProductSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
-        category: { 
+        categeory: { 
             type: String,
             required: true
         },
-        productImage: {
+        avatar: {
             type: String,
             required: true
         },

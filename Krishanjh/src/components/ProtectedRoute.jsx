@@ -5,7 +5,7 @@ export default function ProtectedRoute({ children }) {
   const { isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
-    return <div>Loading...</div>; // Or your loading component
+    return <div>Loading...</div>; 
   }
 
   if (!isAuthenticated) {

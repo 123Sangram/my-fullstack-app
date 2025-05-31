@@ -4,11 +4,13 @@ const jwt = require('jsonwebtoken');
 const cloudinary = require('cloudinary').v2;
 const farmerModel = require('../models/userModel');
 const fs = require('fs');
-const Message = require('../models/messageModel');
+const Message = require('../models/messageModel.js');
 const  asyncHandler  = require('../utils/asyncHandler');
 const Farmer = require('../models/userModel');
 const { ApiError } = require('../utils/ApiError');
 const addProduct = require("../models/addProduct.model.js");
+const connectCloudinary = require("../config/cloudinary.js")
+const Buyer = require('../models/buyerModel.js')
 
 
 const addFarmer = async (req, res) => {
@@ -271,24 +273,12 @@ const getMessages = async (req, res) => {
   }
 };
 
-// Get a single farmer
-const getFarmer = async (req, res) => {
-  try {
-    const farmer = await Farmer.findById(req.params.id).select('-password');
-    if (!farmer) {
-      return res.status(404).json({ message: 'Farmer not found' });
-    }
-    res.json(farmer);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
 
 // Update a farmer
 const updateFarmer = async (req, res) => {
   try {
     const updates = req.body;
-    const farmer = await Farmer.findById(req.params.id);
+    const farmer = await farmerModel.findById(req.params.id);
 
     if (!farmer) {
       return res.status(404).json({ message: 'Farmer not found' });
@@ -309,43 +299,58 @@ const updateFarmer = async (req, res) => {
 // Delete a farmer
 const deleteFarmer = async (req, res) => {
   try {
-    const farmer = await Farmer.findById(req.params.id);
+    const farmer = await farmerModel.findByIdAndDelete(req.params.id);
     if (!farmer) {
       return res.status(404).json({ message: 'Farmer not found' });
     }
 
-    await farmer.remove();
     res.json({ message: 'Farmer deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
+
 // Get all farmers
 const getAllFarmers = async (req, res) => {
   try {
-    const farmers = await Farmer.find().select('-password');
-    res.json(farmers);
+    const farmers = await farmerModel.find().select('-password'); 
+    res.status(200).json({ success: true, farmers });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
 const addNewProduct = asyncHandler(async (req, res) => {
-    const { productname, description, price, quantity, categeory, productImage } = req.body;
+    const { productname, description, price, quantity, categeory } = req.body;
 
-    if (!productname || !description || !price || !quantity || !categeory || !productImage) {
+
+    if (!productname || !description || !price || !quantity || !categeory) {
+               console.log("Missing fields:", {
+            productname,
+            description,
+            price,
+            quantity,
+            categeory,
+           
+        });
         res.status(400);
         throw new ApiError(400, "Please provide all required fields");
     }
-    const imageProduct = req.files?.productImage[0]?.path
-    if(!imageProduct){
-      throw ApiError(503,"file is not uploaded by the some issue of cloudinary")
-    }
+   
+  
+    const avatarLocalPath = req.file?.path;
+    console.log(avatarLocalPath)
 
-    const successfullupload = connectCloudinary(imageProduct)
+ if (!avatarLocalPath) {
+  throw new ApiError(400, "Avatar file is required");
+}
 
-       if (!successfullupload) {
+    const avatar = await connectCloudinary(avatarLocalPath)
+console.log("req.file:", req.file);
+
+
+   if (!avatar) {
         throw new ApiError(400, "Avatar file is required")
     }
 
@@ -355,9 +360,10 @@ const addNewProduct = asyncHandler(async (req, res) => {
         price,
         quantity,
         categeory,
-        productImage:imageProduct.url,
+        avatar:avatar.url,
         createBy: req.user._id
     });
+    console.log("Product created by:", req.user._id);
 
     res.status(201).json({
         success: true,
@@ -365,17 +371,48 @@ const addNewProduct = asyncHandler(async (req, res) => {
     });
 });
 
+// getfarmer product
+const getProductsByFarmerId = asyncHandler(async (req, res) => {
+  const farmerId = req.user._id;
+//   const farmerId = await farmerModel.findById(req.params.id);
+console.log("Incoming farmer ID:", req.user._id);
+
+  if (!farmerId) {
+    res.status(400);
+    throw new Error("Farmer ID is required");
+  }
+
+  const products = await addProduct.find({ createBy: farmerId });
+
+  res.status(200).json({
+    success: true,
+    products
+  });
+});
+
+
+// get all buyer 
+
+const getAllBuyers = async (req, res) => {
+  try {
+    const buyers = await Buyer.find({});
+    res.status(200).json(buyers);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 module.exports = {
   addFarmer,
   loginFarmer,
   loginAdmin,
-  getFarmer,
   updateFarmer,
   deleteFarmer,
   getAllFarmers,
   getUsers,
   sendMessage,
   addNewProduct,
-  getMessages
+  getMessages,
+getProductsByFarmerId,
+getAllBuyers
 };

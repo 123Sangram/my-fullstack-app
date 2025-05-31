@@ -2,7 +2,6 @@ const Message = require('../models/messageModel');
 const Farmer = require('../models/userModel');
 const Buyer = require('../models/buyerModel');
 
-// Get all users (either all farmers or all buyers depending on the requesting user)
 const getAllUsers = async (req, res) => {
   try {
     const { userType, userId } = req.query;
@@ -11,18 +10,18 @@ const getAllUsers = async (req, res) => {
     
     let users = [];
     
-    // If the current user is a farmer, fetch all buyers and vice versa
+ 
     if (userType === 'farmer') {
-      // Current user is farmer, fetch buyers
+    
       users = await Buyer.find({}).select('name email image companyName');
       console.log(`Found ${users.length} buyers for farmer`);
     } else if (userType === 'buyer') {
-      // Current user is buyer, fetch farmers
+      
       users = await Farmer.find({}).select('name email image');
       console.log(`Found ${users.length} farmers for buyer`);
     } else {
       console.log("Invalid userType:", userType);
-      // Default to showing all users
+      
       const farmers = await Farmer.find({}).select('name email image');
       const buyers = await Buyer.find({}).select('name email image companyName');
       
@@ -30,7 +29,7 @@ const getAllUsers = async (req, res) => {
       console.log(`Default: Found ${farmers.length} farmers and ${buyers.length} buyers`);
     }
     
-    // Format the users with consistent properties
+   
     const formattedUsers = users.map(user => ({
       _id: user._id,
       name: user.name || 'Unknown',
@@ -54,7 +53,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// Get messages between two users
+
 const getMessages = async (req, res) => {
   try {
     const { senderId, receiverId } = req.query;
@@ -68,13 +67,12 @@ const getMessages = async (req, res) => {
       });
     }
 
-    // Log the exact IDs being used
+   
     console.log("Getting messages between:", { 
       senderId: senderId.toString(), 
       receiverId: receiverId.toString() 
     });
-    
-    // Find messages where the current users are either sender or receiver
+ 
     const messages = await Message.find({
       $or: [
         { senderId: senderId.toString(), receiverId: receiverId.toString() },
@@ -147,7 +145,7 @@ const sendMessage = async (req, res) => {
     
     console.log("Message saved successfully:", savedMessage._id);
     
-    // Try to emit the message through socket if available
+  
     try {
       if (req.app.get('io')) {
         req.app.get('io').emit('receive_message', savedMessage);
@@ -155,7 +153,7 @@ const sendMessage = async (req, res) => {
       }
     } catch (socketError) {
       console.error("Socket emission failed but message was saved:", socketError);
-      // We don't want to fail the API call if only the socket fails
+   
     }
     
     return res.status(201).json({
