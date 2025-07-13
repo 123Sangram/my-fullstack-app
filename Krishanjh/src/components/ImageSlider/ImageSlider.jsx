@@ -1,66 +1,140 @@
-import React, { useState, useEffect, useRef } from "react";
+// import React, { useState, useEffect, useRef } from "react";
+// import { Link } from "react-router-dom";
+// import ChatIcon from "@mui/icons-material/Chat";
+// import "./ImageSlider.css";
+
+// const ImageSlider = ({ images, content, delay = 10000 }) => {
+//   const [currentIndex, setCurrentIndex] = useState(0);
+//   const containerRef = useRef(null);
+
+//   useEffect(() => {
+//     const container = containerRef.current;
+//     const scrollWidth = container.clientWidth;
+
+//     const scrollToNextImage = () => {
+//       setCurrentIndex((prevIndex) => {
+//         const newIndex = (prevIndex + 1) % images.length;
+//         container.scrollTo({
+//           left: scrollWidth * newIndex,
+//           behavior: "smooth",
+//         });
+//         return newIndex;
+//       });
+//     };
+
+//     const interval = setInterval(scrollToNextImage, delay);
+
+//     return () => clearInterval(interval);
+//   }, [delay, images.length]);
+
+//   return (
+//     <div className="relative top-20 w-full h-full overflow-hidden">
+//       {/* Line above the image */}
+//       {/* Slider Container */}
+//       <div className="slider-container" ref={containerRef}>
+//         <div
+//           className="slider-content h-[800px]"
+//           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+//         >
+//           {images.map((src, index) => (
+//             <div key={index} className="slide relative w-full flex-shrink-0">
+//               {/* Image */}
+//               <img
+//                 className="slider-image w-full h-[1000px] object-cover"
+//                 src={src}
+//                 alt={`Slide ${index + 1}`}
+//               />
+
+//               {/* Content Overlay */}
+//               <div className="content-overlay  pb-[350px]">
+//                 <div className="content-text text-[70px] font-semibold">
+//                   {content[index]}
+//                 </div>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+//       <Link to="/chatbot">
+//         <div className="fixed bottom-8 right-8  bg-[#215A37] p-3 rounded-full shadow-lg cursor-pointer">
+//           <ChatIcon className="text-white text-4xl" />
+//         </div>
+//       </Link>
+//       ;
+//     </div>
+//   );
+// };
+
+// export default ImageSlider;
+
+
+
+
+
+
+
+
+
+
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ChatIcon from "@mui/icons-material/Chat";
 import "./ImageSlider.css";
 
 const ImageSlider = ({ images, content, delay = 10000 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const containerRef = useRef(null);
 
   useEffect(() => {
-    const container = containerRef.current;
-    const scrollWidth = container.clientWidth;
-
-    const scrollToNextImage = () => {
-      setCurrentIndex((prevIndex) => {
-        const newIndex = (prevIndex + 1) % images.length;
-        container.scrollTo({
-          left: scrollWidth * newIndex,
-          behavior: "smooth",
-        });
-        return newIndex;
-      });
-    };
-
-    const interval = setInterval(scrollToNextImage, delay);
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, delay);
 
     return () => clearInterval(interval);
   }, [delay, images.length]);
 
   return (
-    <div className="relative top-20 w-full h-full overflow-hidden">
-      {/* Line above the image */}
-      {/* Slider Container */}
-      <div className="slider-container" ref={containerRef}>
+    <div className="relative group w-full h-screen overflow-hidden">
+      {/* Background Images with Fade */}
+      {images.map((src, index) => (
         <div
-          className="slider-content h-[800px]"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+          key={index}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out pointer-events-none ${
+            index === currentIndex ? "opacity-100 z-0" : "opacity-0 z-0"
+          }`}
         >
-          {images.map((src, index) => (
-            <div key={index} className="slide relative w-full flex-shrink-0">
-              {/* Image */}
-              <img
-                className="slider-image w-full h-[1000px] object-cover"
-                src={src}
-                alt={`Slide ${index + 1}`}
-              />
-
-              {/* Content Overlay */}
-              <div className="content-overlay  pb-[350px]">
-                <div className="content-text text-[70px] font-semibold">
-                  {content[index]}
-                </div>
-              </div>
-            </div>
-          ))}
+          <img
+            src={src}
+            alt={`Slide ${index + 1}`}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black bg-opacity-40"></div>
         </div>
+      ))}
+
+      {/* Content Overlay */}
+      <div className="relative z-10 flex flex-col justify-center items-center h-full text-center px-4">
+<h1
+  className="
+    text-white font-medium
+    text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[4.5rem] mb-4
+    opacity-0 translate-y-8 scale-95
+    group-hover:opacity-100 group-hover:translate-y-0 group-hover:scale-100
+    transition-all duration-[2000ms] ease-out delay-300
+    drop-shadow-[0_5px_20px_rgba(0,0,0,0.8)]
+    tracking-[-1px] font-sans
+  "
+>
+  {content[currentIndex]}
+</h1>
+
       </div>
+
+      {/* Floating Chat Icon */}
       <Link to="/chatbot">
-        <div className="fixed bottom-8 right-8  bg-[#215A37] p-3 rounded-full shadow-lg cursor-pointer">
+        <div className="fixed bottom-8 right-8 bg-[#215A37] p-3 rounded-full shadow-lg cursor-pointer z-20">
           <ChatIcon className="text-white text-4xl" />
         </div>
       </Link>
-      ;
     </div>
   );
 };
