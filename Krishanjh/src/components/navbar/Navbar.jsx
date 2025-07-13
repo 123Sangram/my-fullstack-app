@@ -1,11 +1,230 @@
-// components/Navbar.js
+// // components/Navbar.js
+// import { motion } from "framer-motion";
+// import { useState } from "react";
+// import { FaComments, FaGlobe, FaPhoneAlt } from "react-icons/fa";
+// import { Link, useNavigate } from "react-router-dom";
+// import { useAuth } from '../../context/AuthContext';
+// import { toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+
+// const translations = {
+//   en: {
+//     home: "Home",
+//     education: "Education",
+//     about: "About",
+//     support: "Support",
+//     faq: "FAQ",
+//     callUs: "Call Us",
+//     profile: "Profile",
+//     slogan: "Grow with Innovation",
+//     language: "English",
+//   },
+//   hi: {
+//     home: "होम",
+//     education: "शिक्षा",
+//     about: "हमारे बारे में",
+//     support: "सहायता",
+//     faq: "सामान्य प्रश्न",
+//     callUs: "हमें कॉल करें",
+//     profile: "प्रोफ़ाइल",
+//     slogan: "नवाचार के साथ बढ़ें",
+//     language: "हिंदी",
+//   },
+// };
+
+// export default function Navbar() {
+//   const [isHovered, setIsHovered] = useState(false);
+//   const [language, setLanguage] = useState("en");
+//   const { user, logout } = useAuth();
+//   const navigate = useNavigate();
+
+//   const toggleLanguage = () => {
+//     setLanguage((prev) => (prev === "en" ? "hi" : "en"));
+//   };
+
+//   const handleLogout = () => {
+//     logout();
+//     toast.success('Logged out successfully!');
+//     navigate('/');
+//   };
+
+//   const handleProfileClick = () => {
+//     if (!user) {
+//       toast.error('Please login first');
+//       navigate('/login');
+//       return;
+//     }
+
+//     const userType = localStorage.getItem('userType');
+//     if (userType === 'true') { // buyer
+//       navigate("/buyer-profile");
+//     } else { // farmer
+//       navigate("/farmer-profile");
+//     }
+//   };
+
+//   const handleHomeClick = (e) => {
+//     e.preventDefault();
+//     navigate('/frontpage');
+//   };
+
+//   return (
+//     <motion.nav
+//       initial={{ opacity: 0, y: -50 }}
+//       animate={{ opacity: 1, y: 0 }}
+//       transition={{ duration: 1 }}
+//       className="fixed top-0 left-0 w-full bg-gradient-to-r bg-[#243F32] to-green-900 shadow-2xl z-50 overflow-hidden"
+//     >
+//       <div className="flex justify-between items-center py-6 px-10 relative">
+//         {/* Logo with Hover Effect */}
+//         <Link
+//           to="/frontpage"
+//           onClick={handleHomeClick}
+//           className="text-4xl font-extrabold text-white tracking-wide relative"
+//           onMouseEnter={() => setIsHovered(true)}
+//           onMouseLeave={() => setIsHovered(false)}
+//         >
+//           KRISAANJH
+//           {isHovered && (
+//             <motion.div
+//               initial={{ scale: 0 }}
+//               animate={{ scale: 1 }}
+//               transition={{ duration: 0.5 }}
+//               className="absolute -top-6 left-0 text-sm bg-yellow-400 px-2 py-1 rounded"
+//             >
+//               {translations[language].slogan}
+//             </motion.div>
+//           )}
+//         </Link>
+
+//         {/* Navigation Links with Sliding Effect */}
+//         <ul className="flex gap-12 text-white text-xl">
+//           {["home", "education"].map(
+//             (key, index) => (
+//               <motion.li
+//                 key={index}
+//                 whileHover={{ scale: 1.2, rotate: 0 }}
+//                 whileTap={{ scale: 0.9 }}
+//                 className="cursor-pointer transition-transform relative "
+//               >
+//                 <Link to={`/${key === "home" ? "frontpage" : key}`}>
+//                   {translations[language][key]}
+//                 </Link>
+//                 <motion.div
+//                   className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400"
+//                   initial={{ scaleX: 0 }}
+//                   whileHover={{ scaleX: 1 }}
+//                   transition={{ duration: 0.5 }}
+//                 />
+//               </motion.li>
+//             )
+//           )}
+          
+//           {/* About Link */}
+//           <motion.li
+//             whileHover={{ scale: 1.2, rotate: 0 }}
+//             whileTap={{ scale: 0.9 }}
+//             className="cursor-pointer transition-transform relative"
+//           >
+//             <Link to="/about-contract-farming">
+//               {translations[language].about}
+//             </Link>
+//             <motion.div
+//               className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400"
+//               initial={{ scaleX: 0 }}
+//               whileHover={{ scaleX: 1 }}
+//               transition={{ duration: 0.5 }}
+//             />
+//           </motion.li>
+
+//           {["support", "faq"].map(
+//             (key, index) => (
+//               <motion.li
+//                 key={index}
+//                 whileHover={{ scale: 1.2, rotate: 0 }}
+//                 whileTap={{ scale: 0.9 }}
+//                 className="cursor-pointer transition-transform relative "
+//               >
+//                 <Link to={`/${key}`}>
+//                   {translations[language][key]}
+//                 </Link>
+//                 <motion.div
+//                   className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400"
+//                   initial={{ scaleX: 0 }}
+//                   whileHover={{ scaleX: 1 }}
+//                   transition={{ duration: 0.5 }}
+//                 />
+//               </motion.li>
+//             )
+//           )}
+//         </ul>
+
+//         {/* Contact and Profile */}
+//         <div className="flex gap-8 items-center">
+//           {user ? (
+//             <>
+
+//           <a
+//   href="tel:6386054411"
+//   className="text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
+// >
+//   {translations[language].callUs}
+// </a>
+//             </>
+//           ) : (
+//             <>
+//               <Link to="/login" className="hover:text-green-300">
+//                 Login
+//               </Link>
+//               <Link to="/register" className="hover:text-green-300">
+//                 Register
+//               </Link>
+//             </>
+//           )}
+
+//           <button
+//             className="flex items-center gap-2 text-white hover:scale-110 transition-transform"
+//             onClick={toggleLanguage}
+//           >
+//             <FaGlobe /> {translations[language].language}
+//           </button>
+
+//           <div className="relative ml-4">
+//             <div
+//               className="cursor-pointer"
+//               onClick={handleProfileClick}
+//             >
+//               {user?.image ? (
+//                 <img
+//                   src={user.image}
+//                   alt="Profile"
+//                   className="w-10 h-10 rounded-full object-cover"
+//                 />
+//               ) : (
+//                 <div className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white text-xl">
+//                   {user?.name?.charAt(0) || 'U'}
+//                 </div>
+//               )}
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </motion.nav>
+//   );
+// }
+
+
+
+
+
+
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { FaComments, FaGlobe, FaPhoneAlt } from "react-icons/fa";
+import { FaBars, FaGlobe } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from '../../context/AuthContext';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from "../../context/AuthContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const translations = {
   en: {
@@ -15,9 +234,10 @@ const translations = {
     support: "Support",
     faq: "FAQ",
     callUs: "Call Us",
-    profile: "Profile",
     slogan: "Grow with Innovation",
     language: "English",
+    login: "Login",
+    register: "Register",
   },
   hi: {
     home: "होम",
@@ -26,15 +246,17 @@ const translations = {
     support: "सहायता",
     faq: "सामान्य प्रश्न",
     callUs: "हमें कॉल करें",
-    profile: "प्रोफ़ाइल",
     slogan: "नवाचार के साथ बढ़ें",
     language: "हिंदी",
+    login: "लॉगिन",
+    register: "रजिस्टर",
   },
 };
 
 export default function Navbar() {
   const [isHovered, setIsHovered] = useState(false);
   const [language, setLanguage] = useState("en");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -44,43 +266,38 @@ export default function Navbar() {
 
   const handleLogout = () => {
     logout();
-    toast.success('Logged out successfully!');
-    navigate('/');
+    toast.success("Logged out successfully!");
+    navigate("/");
   };
 
   const handleProfileClick = () => {
     if (!user) {
-      toast.error('Please login first');
-      navigate('/login');
+      toast.error("Please login first");
+      navigate("/login");
       return;
     }
-
-    const userType = localStorage.getItem('userType');
-    if (userType === 'true') { // buyer
-      navigate("/buyer-profile");
-    } else { // farmer
-      navigate("/farmer-profile");
-    }
+    const userType = localStorage.getItem("userType");
+    navigate(userType === "true" ? "/buyer-profile" : "/farmer-profile");
   };
 
   const handleHomeClick = (e) => {
     e.preventDefault();
-    navigate('/frontpage');
+    navigate("/frontpage");
   };
 
   return (
     <motion.nav
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1 }}
-      className="fixed top-0 left-0 w-full bg-gradient-to-r bg-[#243F32] to-green-900 shadow-2xl z-50 overflow-hidden"
+      transition={{ duration: 0.8 }}
+      className="fixed top-0 left-0 w-full bg-[#243F32] shadow-2xl z-50"
     >
-      <div className="flex justify-between items-center py-6 px-10 relative">
-        {/* Logo with Hover Effect */}
+      <div className="max-w-7xl mx-auto px-4 py-5 flex items-center justify-between">
+        {/* Left: Logo */}
         <Link
           to="/frontpage"
           onClick={handleHomeClick}
-          className="text-4xl font-extrabold text-white tracking-wide relative"
+          className="text-2xl md:text-3xl font-extrabold text-white tracking-wide relative"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -90,125 +307,135 @@ export default function Navbar() {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="absolute -top-6 left-0 text-sm bg-yellow-400 px-2 py-1 rounded"
+              className="absolute -top-6 left-0 text-xs md:text-sm bg-yellow-400 px-2 py-1 rounded"
             >
               {translations[language].slogan}
             </motion.div>
           )}
         </Link>
 
-        {/* Navigation Links with Sliding Effect */}
-        <ul className="flex gap-12 text-white text-xl">
-          {["home", "education"].map(
-            (key, index) => (
-              <motion.li
-                key={index}
-                whileHover={{ scale: 1.2, rotate: 0 }}
-                whileTap={{ scale: 0.9 }}
-                className="cursor-pointer transition-transform relative "
+        {/* Center: Nav Links */}
+        <ul className="hidden md:flex gap-8 text-lg">
+          {["home", "education", "about", "support", "faq"].map((key) => (
+            <li key={key} className="relative group">
+              <Link
+                to={
+                  key === "home"
+                    ? "/frontpage"
+                    : key === "about"
+                    ? "/about-contract-farming"
+                    : `/${key}`
+                }
+                className="text-white transition"
               >
-                <Link to={`/${key === "home" ? "frontpage" : key}`}>
-                  {translations[language][key]}
-                </Link>
-                <motion.div
-                  className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400"
-                  initial={{ scaleX: 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.5 }}
-                />
-              </motion.li>
-            )
-          )}
-          
-          {/* About Link */}
-          <motion.li
-            whileHover={{ scale: 1.2, rotate: 0 }}
-            whileTap={{ scale: 0.9 }}
-            className="cursor-pointer transition-transform relative"
-          >
-            <Link to="/about-contract-farming">
-              {translations[language].about}
-            </Link>
-            <motion.div
-              className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400"
-              initial={{ scaleX: 0 }}
-              whileHover={{ scaleX: 1 }}
-              transition={{ duration: 0.5 }}
-            />
-          </motion.li>
-
-          {["support", "faq"].map(
-            (key, index) => (
-              <motion.li
-                key={index}
-                whileHover={{ scale: 1.2, rotate: 0 }}
-                whileTap={{ scale: 0.9 }}
-                className="cursor-pointer transition-transform relative "
-              >
-                <Link to={`/${key}`}>
-                  {translations[language][key]}
-                </Link>
-                <motion.div
-                  className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400"
-                  initial={{ scaleX: 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.5 }}
-                />
-              </motion.li>
-            )
-          )}
+                {translations[language][key]}
+              </Link>
+              <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
+            </li>
+          ))}
         </ul>
 
-        {/* Contact and Profile */}
-        <div className="flex gap-8 items-center">
-          {user ? (
-            <>
-
-          <a
-  href="tel:6386054411"
-  className="text-white hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
->
-  {translations[language].callUs}
-</a>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="hover:text-green-300">
-                Login
-              </Link>
-              <Link to="/register" className="hover:text-green-300">
-                Register
-              </Link>
-            </>
-          )}
+        {/* Right: Call Us, Language, Profile */}
+        <div className="hidden md:flex items-center gap-6 text-lg">
+          <button className="relative group">
+            <span className="text-white transition">{translations[language].callUs}</span>
+            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
+          </button>
 
           <button
-            className="flex items-center gap-2 text-white hover:scale-110 transition-transform"
             onClick={toggleLanguage}
+            className="relative group flex items-center gap-1"
+          >
+            <span className="text-white transition flex items-center gap-1">
+              <FaGlobe /> {translations[language].language}
+            </span>
+            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
+          </button>
+
+          <div
+            className="cursor-pointer"
+            onClick={handleProfileClick}
+          >
+            {user?.image ? (
+              <img
+                src={user.image}
+                alt="Profile"
+                className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-green-600 flex items-center justify-center text-white text-lg">
+                {user?.name?.charAt(0) || "U"}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Hamburger for Mobile */}
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="md:hidden text-white text-2xl"
+        >
+          <FaBars />
+        </button>
+      </div>
+
+      {/* Mobile Dropdown */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-[#243F32] text-white text-lg flex flex-col py-4 px-4 space-y-2">
+          {["home", "education", "about", "support", "faq"].map((key) => (
+            <Link
+              key={key}
+              to={
+                key === "home"
+                  ? "/frontpage"
+                  : key === "about"
+                  ? "/about-contract-farming"
+                  : `/${key}`
+              }
+              className="border-b border-green-700 pb-2"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {translations[language][key]}
+            </Link>
+          ))}
+
+          <button className="border-b border-green-700 pb-2 text-left">
+            {translations[language].callUs}
+          </button>
+
+          <button
+            onClick={() => {
+              toggleLanguage();
+              setIsMenuOpen(false);
+            }}
+            className="border-b border-green-700 pb-2 text-left flex items-center gap-1"
           >
             <FaGlobe /> {translations[language].language}
           </button>
 
-          <div className="relative ml-4">
-            <div
-              className="cursor-pointer"
-              onClick={handleProfileClick}
-            >
-              {user?.image ? (
-                <img
-                  src={user.image}
-                  alt="Profile"
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-              ) : (
-                <div className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white text-xl">
-                  {user?.name?.charAt(0) || 'U'}
-                </div>
-              )}
-            </div>
+          <div
+            className="flex items-center gap-2 pt-2"
+            onClick={() => {
+              handleProfileClick();
+              setIsMenuOpen(false);
+            }}
+          >
+            {user?.image ? (
+              <img
+                src={user.image}
+                alt="Profile"
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center text-white text-lg">
+                {user?.name?.charAt(0) || "U"}
+              </div>
+            )}
+            <span>Profile</span>
           </div>
         </div>
-      </div>
+      )}
     </motion.nav>
   );
 }
+
