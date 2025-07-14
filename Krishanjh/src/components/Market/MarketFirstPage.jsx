@@ -77,7 +77,7 @@ const MarketFirstPage = () => {
               />
             </li>
 
-            {/* Navigation Items with Hover Effect */}
+          
             <li className="group flex items-center space-x-2 p-2 rounded-full hover:bg-gray-200 cursor-pointer">
               <div className="border px-2 py-2 rounded-full bg-gray-200 group-hover:bg-green-700">
            <TravelExploreIcon/>
@@ -122,7 +122,7 @@ const MarketFirstPage = () => {
           </ul>
         </aside>
 
-        {/* Featured Listings */}
+        {/* Featured Listings we can add new feature*/}
         <main className="flex-1 bg-[#F4F2EB] pt-10 absolute right-0 left-90 top-20 p-6 px-[140px]">
           <div className="flex justify-between mr-10 ">
             <h2 className="text-4xl text-[#243F32] font-semibold mb-4">
@@ -135,8 +135,7 @@ const MarketFirstPage = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 w-[900px] lg:grid-cols-3 gap-20">
-            {/* Repeat similar blocks for listings */}
-            {/* Example Listing */}
+     
             <div className="mt-10">
               <div className="relative">
                 <img
@@ -215,6 +214,7 @@ const MarketFirstPage = () => {
               </div>
             </div>
             {/*  */}
+           {/*distribution */}
             {/*  */}
             <div className="">
               <div className="relative">
@@ -343,7 +343,7 @@ const MarketFirstPage = () => {
                 </p>
               </div>
             </div>
-            {/* Repeat similar blocks for other listings */}
+           
             {/* ... */}
           </div>
         </main>
