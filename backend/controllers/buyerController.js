@@ -19,7 +19,7 @@ const registerBuyer = async (req, res) => {
       address,
     } = req.body;
 
-    // Validate required fields
+  
     if (!name || !email || !password || !phone) {
       return res.status(400).json({
         success: false,
@@ -39,14 +39,14 @@ const registerBuyer = async (req, res) => {
     let imageUrl = null;
     if (req.file) {
       try {
-        // Upload to Cloudinary
+       
         const result = await cloudinary.uploader.upload(req.file.path, {
           folder: 'buyer_images',
           resource_type: 'auto'
         });
         imageUrl = result.secure_url;
         
-        // Clean up the uploaded file
+        
         fs.unlink(req.file.path, (err) => {
           if (err) console.error('Error deleting local file:', err);
         });
@@ -55,7 +55,7 @@ const registerBuyer = async (req, res) => {
       }
     }
 
-    // Parse address
+   
     let parsedAddress = {};
     try {
       parsedAddress = address ? JSON.parse(address) : {
@@ -72,11 +72,11 @@ const registerBuyer = async (req, res) => {
       };
     }
 
-    // Create new buyer
+  
     const newBuyer = new Buyer({
       name,
       email,
-      password, // Plain password - will be hashed by pre-save hook
+      password, 
       phone,
       companyName: companyName || '',
       image: imageUrl,
@@ -89,7 +89,7 @@ const registerBuyer = async (req, res) => {
     const savedBuyer = await newBuyer.save();
     console.log('Buyer saved successfully');
 
-    // Generate JWT token for immediate login
+
     const token = jwt.sign(
       { buyerId: savedBuyer._id, email: savedBuyer.email },
       process.env.JWT_SECRET || 'greatstack',
@@ -132,7 +132,7 @@ const loginBuyer = async (req, res) => {
       });
     }
 
-    // Find buyer
+   
     const buyer = await Buyer.findOne({ email });
     if (!buyer) {
       return res.status(401).json({
@@ -141,7 +141,7 @@ const loginBuyer = async (req, res) => {
       });
     }
 
-    // Check password
+  
     const isPasswordValid = await bcrypt.compare(password, buyer.password);
     if (!isPasswordValid) {
       return res.status(401).json({
@@ -150,7 +150,7 @@ const loginBuyer = async (req, res) => {
       });
     }
 
-    // Generate token
+  
     const token = jwt.sign(
       { buyerId: buyer._id, email: buyer.email },
       process.env.JWT_SECRET,
