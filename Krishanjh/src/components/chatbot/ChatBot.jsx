@@ -35,7 +35,7 @@ const ChatBot = () => {
     }
   }, []);
 
-  // Handle real-time messages
+  //for to handle real-time messages
   useEffect(() => {
     if (socket) {
       socket.on('receive_message', (message) => {
@@ -56,21 +56,21 @@ const ChatBot = () => {
     };
   }, [socket, selectedUser, user]);
 
-  // Fetch users
+  // we can fetch user 
   useEffect(() => {
     if (user) {
       fetchUsers();
     }
   }, [user]);
 
-  // Fetch messages when user selected
+
   useEffect(() => {
     if (selectedUser) {
       fetchMessages();
     }
   }, [selectedUser]);
 
-  // Auto scroll to bottom
+
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -151,7 +151,7 @@ const ChatBot = () => {
  const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedUser) return;
 
-    // Clear any previous errors
+  
     setError(null);
     
    
@@ -233,7 +233,7 @@ const ChatBot = () => {
 
   return (
     <div className="flex h-screen">
-      {/* Users list */}
+     
       <div className="w-1/4 bg-gray-100 users-list">
         <h2 className="p-4 text-xl font-bold border-b">Chats</h2>
         {loading ? (
@@ -280,9 +280,9 @@ const ChatBot = () => {
         )}
       </div>
 
-      {/* Chat area */}
+    
       <div className="w-3/4 flex flex-col chat-container">
-        {/* Chat Header */}
+       
         <div className="p-4 border-b">
           {selectedUser && (
             <div className="flex items-center">
@@ -296,7 +296,7 @@ const ChatBot = () => {
           )}
         </div>
 
-        {/* Messages Area */}
+    
         <div className="flex-1 p-4 overflow-y-auto chat-container">
           {messages.map((message, index) => (
             <div
@@ -316,7 +316,7 @@ const ChatBot = () => {
           ))}
         </div>
 
-        {/* Message Input */}
+     
         <div className="p-4 border-t">
 
 <div className="flex">
