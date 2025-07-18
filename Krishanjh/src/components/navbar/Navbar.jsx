@@ -80,24 +80,33 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 py-5 flex items-center justify-between">
         {/* Left: Logo */}
         <Link
-          to="/frontpage"
-          onClick={handleHomeClick}
-          className="text-2xl md:text-3xl font-extrabold text-white tracking-wide relative"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          KRISAANJH
-          {isHovered && (
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="absolute -top-6 left-0 text-xs md:text-sm bg-yellow-400 px-2 py-1 rounded"
-            >
-              {translations[language].slogan}
-            </motion.div>
-          )}
-        </Link>
+  to="/frontpage"
+  onClick={handleHomeClick}
+  className="text-2xl md:text-3xl font-extrabold text-white tracking-wide relative flex items-center gap-2"
+  onMouseEnter={() => setIsHovered(true)}
+  onMouseLeave={() => setIsHovered(false)}
+>
+  <motion.img
+    src={logo}
+    alt="Logo"
+    initial={{ scale: 0, rotate: -180 }}
+    animate={{ scale: 1, rotate: 0 }}
+    transition={{ duration: 0.6, type: "spring", stiffness: 120 }}
+    whileHover={{ scale: 1.1, rotate: 5 }}
+    className="w-10 h-10 rounded-full object-cover"
+  />
+  KRISAANJH
+  {isHovered && (
+    <motion.div
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      transition={{ duration: 0.5 }}
+      className="absolute -top-6 left-0 text-xs md:text-sm bg-yellow-400 px-2 py-1 rounded"
+    >
+      {translations[language].slogan}
+    </motion.div>
+  )}
+</Link>
 
         {/* Center: Nav Links */}
         <ul className="hidden md:flex gap-8 text-lg">
