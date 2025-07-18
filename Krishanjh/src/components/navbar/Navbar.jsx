@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import logo from '../../assets/Asset 1@4x 1.png'
 
 const translations = {
   en: {
