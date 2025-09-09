@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 
 export default function LegalPage() {
-  
   return (
     <div className="min-h-screen bg-[#0f261d] text-white flex flex-col items-center p-12">
       {/* Header */}
