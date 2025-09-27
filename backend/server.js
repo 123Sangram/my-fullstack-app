@@ -9,10 +9,7 @@ const socketIo = require('socket.io')
 // // Load environment variables first with correct path
 dotenv.config({ path: path.resolve(__dirname, './.env') })
 
-// // Debug environment variables
-// console.log("Environment variables loaded from:", path.resolve(__dirname, './.env'))
-// console.log("MongoDB URI:", process.env.MONGODB_URI || "Using default")
-// console.log("Cloudinary Name:", process.env.CLOUDINARY_NAME || "Using default")
+
 
 const connectDB = require('./config/mongodb')
 const connectCloudinary = require('./config/cloudinary')
