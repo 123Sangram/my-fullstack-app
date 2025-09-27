@@ -182,64 +182,7 @@ const loginBuyer = async (req, res) => {
   }
 };
 
-// const getBuyers = async (req, res) => {
-//   try {
-//     const buyers = await Buyer.find({}, '-password');
-//     res.status(200).json(buyers);
-//   } catch (error) {
-//     console.error('Error in getBuyers:', error);
-//     res.status(500).json({
-//       success: false,
-//       message: "Error fetching buyers",
-//       error: error.message
-//     });
-//   }
-// };
 
-// const updateBuyer = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const updateData = { ...req.body };
-
-//     if (req.file) {
-//       const result = await cloudinary.uploader.upload(req.file.path, {
-//         folder: 'buyer_images'
-//       });
-//       updateData.image = result.secure_url;
-//     }
-
-//     if (updateData.address) {
-//       updateData.address = JSON.parse(updateData.address);
-//     }
-
-//     const updatedBuyer = await Buyer.findByIdAndUpdate(
-//       id,
-//       updateData,
-//       { new: true }
-//     );
-
-//     if (!updatedBuyer) {
-//       return res.status(404).json({
-//         success: false,
-//         message: 'Buyer not found'
-//       });
-//     }
-
-//     res.status(200).json({
-//       success: true,
-//       message: 'Profile updated successfully',
-//       buyer: updatedBuyer
-//     });
-
-//   } catch (error) {
-//     console.error('Error updating buyer:', error);
-//     res.status(500).json({
-//       success: false,
-//       message: 'Error updating profile',
-//       error: error.message
-//     });
-//   }
-// };
 
 const getAllFarmersWithProducts = async (req, res) => {
   try {
