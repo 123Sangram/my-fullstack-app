@@ -7,7 +7,7 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const connectDB = async () => {
     try {
-        const uri = process.env.MONGODB_URI || "mongodb+srv://hello:gxxWbMG2ASTP7FLj@cluster0.utxpy.mongodb.net/Krishanjh";
+        const uri = process.env.MONGODB_URI || "MONGODB_URI=mongodb+srv://sangramamvan_db_user:GS2aRolYpsK5ts9O@cluster0.rkad4ob.mongodb.net/Farming";
         
         console.log("MongoDB connecting with URI:", uri);
         mongoose.connection.on('connected', () => console.log("MongoDB database connected successfully"));
